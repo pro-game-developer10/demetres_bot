@@ -1,7 +1,7 @@
 import { Time } from '@sapphire/duration';
 import { Precondition } from '@sapphire/framework';
 
-import { ChatInputCommandInteraction, CommandInteraction, ContextMenuCommandInteraction, GuildMember, Interaction, Message } from 'discord.js';
+import { ChatInputCommandInteraction, ContextMenuCommandInteraction, GuildMember, Message, PermissionFlagsBits } from 'discord.js';
 import { MessageAdapter } from '../utils/messageAdapter';
 
 export enum AntiLinkResults {
@@ -21,6 +21,7 @@ export class AntiLinkPrecondition extends Precondition {
     }
     public override async contextMenuRun(interaction: ContextMenuCommandInteraction) {
         // return this.antiLinkPreconditionResults(AntiLinkPrecondition.checkMessage(interaction.options.data.map(d => d.value).toString().replace(","," ")), null)
+        interaction
         return this.ok()
     }
     public static checkMessage(messageContent: string): AntiLinkResults {
@@ -28,10 +29,11 @@ export class AntiLinkPrecondition extends Precondition {
         let pieceActions = strippedMessagePieces.map(piece => {
             if (piece.startsWith("tenor.com")) return AntiLinkResults.PASS
             if (piece.startsWith("cdn.discordapp.com")) return AntiLinkResults.PASS
+            if (piece.startsWith("discord.com/api/v10/webhooks")) return AntiLinkResults.PASS
             if (piece.startsWith("instagram.com/") || piece.startsWith("youtube.com/") || piece.startsWith("twitter.com/") || piece.startsWith("x.com/") || piece.startsWith("reddit.com/")) return AntiLinkResults.DELETE
             if (piece.startsWith("discord.gg/") || piece.startsWith("discord.com/invite/")) return AntiLinkResults.TIMEOUT_30M
             if (piece.startsWith("discord.com/api/oauth2/authorize/")) return AntiLinkResults.TIMEOUT_2H
-            return AntiLinkResults.DEFAULT
+            return AntiLinkResults.PASS
         })
         let dominatingAction = pieceActions.reduce((prev, val) => prev > val ? prev : val)
         return dominatingAction
@@ -47,6 +49,8 @@ export class AntiLinkPrecondition extends Precondition {
             case AntiLinkResults.DEFAULT:
                 return async () => {
                     let adaptee = new MessageAdapter(msg)
+                    if ((adaptee.subject as ChatInputCommandInteraction).commandName) return adaptee
+                    if (adaptee.user.bot) return adaptee
                     if (!adaptee.user.dmChannel) adaptee.user.createDM().then(dm => { dm.send(errorMsg) })
                     else adaptee.user.dmChannel?.send(errorMsg)
                     await adaptee.deleteReply()
@@ -55,6 +59,8 @@ export class AntiLinkPrecondition extends Precondition {
             case AntiLinkResults.DELETE:
                 return async () => {
                     let adaptee = new MessageAdapter(msg)
+                    if ((adaptee.subject as ChatInputCommandInteraction).commandName) return adaptee
+                    if (adaptee.user.bot) return adaptee
                     if (!adaptee.user.dmChannel) adaptee.user.createDM().then(dm => { dm.send(errorMsg) })
                     else adaptee.user.dmChannel?.send(errorMsg)
                     await adaptee.deleteReply()
@@ -63,6 +69,8 @@ export class AntiLinkPrecondition extends Precondition {
             case AntiLinkResults.TIMEOUT_30M:
                 return async () => {
                     let adaptee = new MessageAdapter(msg)
+                    if ((adaptee.subject as ChatInputCommandInteraction).commandName) return adaptee
+                    if (adaptee.user.bot) return adaptee
                     if (!adaptee.user.dmChannel) adaptee.user.createDM().then(dm => { dm.send(errorMsg) })
                     else adaptee.user.dmChannel?.send(errorMsg)
                     let member = adaptee.member as GuildMember
@@ -73,6 +81,8 @@ export class AntiLinkPrecondition extends Precondition {
             case AntiLinkResults.TIMEOUT_2H:
                 return async () => {
                     let adaptee = new MessageAdapter(msg)
+                    if ((adaptee.subject as ChatInputCommandInteraction).commandName) return adaptee
+                    if (adaptee.user.bot) return adaptee
                     if (!adaptee.user.dmChannel) adaptee.user.createDM().then(dm => { dm.send(errorMsg) })
                     else adaptee.user.dmChannel?.send(errorMsg)
                     let member = adaptee.member as GuildMember
@@ -83,6 +93,8 @@ export class AntiLinkPrecondition extends Precondition {
             case AntiLinkResults.BAN:
                 return async () => {
                     let adaptee = new MessageAdapter(msg)
+                    if ((adaptee.subject as ChatInputCommandInteraction).commandName) return adaptee
+                    if (adaptee.user.bot) return adaptee
                     if (!adaptee.user.dmChannel) adaptee.user.createDM().then(dm => { dm.send(errorMsg) })
                     else adaptee.user.dmChannel?.send(errorMsg)
                     let member = adaptee.member as GuildMember
@@ -97,6 +109,7 @@ export class AntiLinkPrecondition extends Precondition {
             case AntiLinkResults.PASS:
                 return this.ok()
             default:
+                if (AntiLinkPrecondition.memberShallBypass(inputResults, (msg.member as GuildMember | undefined)).canBypass) return this.ok()
                 return this.error({
                     message: `Anti-Link policy violation (Action: ${inputResults})`,
                     context: {
@@ -105,6 +118,13 @@ export class AntiLinkPrecondition extends Precondition {
                     }
                 })
         }
+    }
+    public static memberShallBypass(inputResults: AntiLinkResults, member?: GuildMember | null) {
+        if (!member) return { canBypass: true, result: AntiLinkResults.PASS }
+        if (inputResults == AntiLinkResults.BAN) return { canBypass: false, result: inputResults }
+        let perms = member.permissions
+        if (perms.has(PermissionFlagsBits.BanMembers, true)) return { canBypass: true, result: AntiLinkResults.PASS }
+        return { canBypass: false, result: inputResults }
     }
 }
 declare module '@sapphire/framework' {

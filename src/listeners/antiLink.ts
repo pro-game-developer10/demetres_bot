@@ -1,6 +1,6 @@
-import { Listener, container, UserError } from '@sapphire/framework';
-import { Message } from 'discord.js';
-import { AntiLinkPrecondition, AntiLinkResults } from '../preconditions/antiLink';
+import { Listener } from '@sapphire/framework';
+import { GuildMember, Message } from 'discord.js';
+import { AntiLinkPrecondition, AntiLinkResults } from '../preconditions/AntiLinkPrecondition';
 
 export class AntiLinkListener extends Listener {
     public constructor(context: Listener.Context, options: Listener.Options) {
@@ -13,7 +13,8 @@ export class AntiLinkListener extends Listener {
     }
     public async run(msg: Message) {
         const content = msg.content
-        const results = AntiLinkPrecondition.checkMessage(content)
+        let results = AntiLinkPrecondition.checkMessage(content)
+        if (AntiLinkPrecondition.memberShallBypass(results, (msg.member as GuildMember | undefined)).canBypass) results = AntiLinkResults.PASS
         return await AntiLinkPrecondition.antiLinkAction(results,msg)()
     }
 }

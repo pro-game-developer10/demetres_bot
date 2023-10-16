@@ -24,7 +24,6 @@ import {
     InteractionEditReplyOptions,
     MessagePayload,
     InteractionReplyOptions,
-    MessageEditOptions,
     Guild,
     AnySelectMenuInteraction,
     AutocompleteInteraction,
@@ -174,7 +173,6 @@ export class MessageAdapter implements Omit<ChatInputCommandInteraction, "option
             let interaction = this.subject as ChatInputCommandInteraction
             return interaction.inCachedGuild()
         }
-        let msg = this.subject as Message
         return false
     }
     public inGuild(): this is ChatInputCommandInteraction<"cached" | "raw"> {
@@ -190,7 +188,6 @@ export class MessageAdapter implements Omit<ChatInputCommandInteraction, "option
             let interaction = this.subject as ChatInputCommandInteraction
             return interaction.inRawGuild()
         }
-        let msg = this.subject as Message
         return true
     }
     public isAnySelectMenu(): this is AnySelectMenuInteraction<CacheType> {
@@ -258,7 +255,7 @@ export class MessageAdapter implements Omit<ChatInputCommandInteraction, "option
             return await interaction.showModal(modal)
         }
     }
-    public toJSON(...props: Record<string, string | boolean>[]): unknown {
+    public toJSON(..._props: Record<string, string | boolean>[]): unknown {
         return this.subject.toJSON()
     }
     public toString(): string {
