@@ -1,6 +1,13 @@
 import { SapphireClient } from '@sapphire/framework';
 import { GatewayIntentBits } from 'discord.js';
+import { configDotenv } from 'dotenv';
 
-const client = new SapphireClient({ intents: [GatewayIntentBits.MessageContent ,GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildVoiceStates], loadMessageCommandListeners: true });
+const env = configDotenv()
+const processEnv = env.parsed
+if (env.error) throw env.error
 
-client.login('MTE0NzYyNTMzODU3NTI3NDAwNA.GpjCID._8y2DzG60Quc1PZqPT3WoI-rsY2S70C2OtAhc0');
+const client = new SapphireClient({ intents: [GatewayIntentBits.MessageContent ,GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildVoiceStates], loadMessageCommandListeners: true, defaultPrefix: "!" });
+
+console.log(processEnv!.TOKEN)
+
+client.login(processEnv!.TOKEN);
