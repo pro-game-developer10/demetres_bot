@@ -1,4 +1,59 @@
-import { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } from "discord.js";
+import { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ButtonBuilder, ButtonStyle, OverwriteResolvable, OverwriteType, Guild } from "discord.js";
+import { dotenv } from "./dotenv";
+
+export namespace TicketPermissionsInfo {
+    export const DonateTicketPermissions = (civilianID: string, guild: Guild): OverwriteResolvable[] => [
+        {
+            type: OverwriteType.Member,
+            id: civilianID,
+            allow: ["ViewChannel"]
+        },
+        {
+            type: OverwriteType.Role,
+            id: guild.roles.everyone,
+            deny: ["ViewChannel"]
+        },
+        {
+            type: OverwriteType.Role,
+            id: dotenv("DONATE_MANAGER_ROLE_ID"),
+            allow: ["ViewChannel"]
+        }
+    ]
+    export const SupportTicketPermissions = (civilianID: string, guild: Guild): OverwriteResolvable[] => [
+        {
+            type: OverwriteType.Member,
+            id: civilianID,
+            allow: ["ViewChannel"]
+        },
+        {
+            type: OverwriteType.Role,
+            id: guild.roles.everyone,
+            deny: ["ViewChannel"]
+        },
+        {
+            type: OverwriteType.Role,
+            id: dotenv("STAFF_ROLE_ID"),
+            allow: ["ViewChannel"]
+        }
+    ]
+    export const JobTicketPermissions = (civilianID: string, guild: Guild): OverwriteResolvable[] => [
+        {
+            type: OverwriteType.Member,
+            id: civilianID,
+            allow: ["ViewChannel"]
+        },
+        {
+            type: OverwriteType.Role,
+            id: guild.roles.everyone,
+            deny: ["ViewChannel"]
+        },
+        {
+            type: OverwriteType.Role,
+            id: dotenv("JOB_MANAGER_ROLE_ID"),
+            allow: ["ViewChannel"]
+        }
+    ]
+}
 
 const TicketSelectMenuOptions = [
     {
@@ -27,7 +82,8 @@ export namespace EmbedTemplate {
     export const InvalidTemplateError = (id: string) => new EmbedBuilder()
         .setColor(0xFF0000)
         .setAuthor({
-            name: "AstralRP"
+            name: "AstralRP",
+            iconURL: "https://cdn.discordapp.com/attachments/1142540077407424512/1160585371642503228/giphy.gif?ex=653e6cdb&is=652bf7db&hm=a51f5f6544b2ab96bd308f3c25d0e89900f7b7133095efdc402ca13d1c3305f5&"
         })
         .setTitle("Error")
         .setDescription(`Couldn't find template with id of ${id}`)
@@ -46,11 +102,41 @@ export namespace EmbedTemplate {
                 .setPlaceholder("Επιλέξτε μια κατηγορία!")
                 .setCustomId("ticket_type")
         ])
-    export const TicketCreationEmbedTemplate = new EmbedBuilder()
+    export const TicketCreationEmbedTemplate = (userId: string) => new EmbedBuilder()
         .setColor(0x2a9bf2)
         .setAuthor({
-            name: "AstralRP"
+            name: "Astral RolePlay",
+            iconURL: "https://cdn.discordapp.com/attachments/1142540077407424512/1160585371642503228/giphy.gif?ex=653e6cdb&is=652bf7db&hm=a51f5f6544b2ab96bd308f3c25d0e89900f7b7133095efdc402ca13d1c3305f5&"
         })
         .setTitle("Ticket φτιάχτηκε επιτυχώς!")
-        .setDescription("Υπομονή! Θα σας εξυπηρετήσουμε σύντομα!")
+        .setDescription("<:support:1163175087562829876> Υπομονή! Θα σας εξυπηρετήσουμε σύντομα!")
+        .addFields([
+            {
+                name: "Το ticket φτιάχτηκε από:",
+                value: `<@${userId}>`,
+
+            }
+        ])
+    export const TicketControls = new ActionRowBuilder<ButtonBuilder>()
+        .addComponents([
+            new ButtonBuilder()
+                .setCustomId("close_ticket")
+                .setStyle(ButtonStyle.Danger)
+                .setLabel("Close Ticket")
+                .setEmoji("1156587045876142122"),
+            new ButtonBuilder()
+                .setCustomId("claim_ticket")
+                .setStyle(ButtonStyle.Primary)
+                .setLabel("Claim Ticket (Soon!)")
+                .setDisabled(true)
+                .setEmoji("1163175068361293905"),
+        ])
+    export const NotATicketErrorEmbed = new EmbedBuilder()
+        .setColor(0xFF0000)
+        .setAuthor({
+            name: "Astral RolePlay",
+            iconURL: "https://cdn.discordapp.com/attachments/1142540077407424512/1160585371642503228/giphy.gif?ex=653e6cdb&is=652bf7db&hm=a51f5f6544b2ab96bd308f3c25d0e89900f7b7133095efdc402ca13d1c3305f5&"
+        })
+        .setTitle("Error")
+        .setDescription("Για λόγους ασφαλείας, το command είναι σχεδιασμένο να λειτουργεί μόνο σε tickets")
 }

@@ -19,9 +19,8 @@ export class AntiLinkPrecondition extends Precondition {
     public override async chatInputRun(interaction: ChatInputCommandInteraction) {
         return this.antiLinkPreconditionResults(AntiLinkPrecondition.checkMessage(interaction.options.data.map(d => d.value).toString().replace(",", " ")), interaction)
     }
-    public override async contextMenuRun(interaction: ContextMenuCommandInteraction) {
+    public override async contextMenuRun(_interaction: ContextMenuCommandInteraction) {
         // return this.antiLinkPreconditionResults(AntiLinkPrecondition.checkMessage(interaction.options.data.map(d => d.value).toString().replace(","," ")), null)
-        interaction
         return this.ok()
     }
     public static checkMessage(messageContent: string): AntiLinkResults {
