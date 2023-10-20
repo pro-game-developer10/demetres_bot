@@ -139,4 +139,24 @@ export namespace EmbedTemplate {
         })
         .setTitle("Error")
         .setDescription("Για λόγους ασφαλείας, το command είναι σχεδιασμένο να λειτουργεί μόνο σε tickets")
+    export const UserSupportNeeded = (userId: string, channelId: string) => new EmbedBuilder()
+        .setColor(0x2a9bf2)
+        .setAuthor({
+            name: "Astral RolePlay",
+            iconURL: "https://cdn.discordapp.com/attachments/1142540077407424512/1160585371642503228/giphy.gif?ex=653e6cdb&is=652bf7db&hm=a51f5f6544b2ab96bd308f3c25d0e89900f7b7133095efdc402ca13d1c3305f5&"
+        })
+        .setTitle("Ένας χρήστης χρειάζεται βοήθεια!")
+        .setDescription("<:info:1163175068361293905> Ένας χρήστης χρειάζεται βοήθεια! Παρακαλώ πηγαίνετε να τον εξυπηρετήσετε!")
+        .addFields([
+            {
+                name: "Χρήστης",
+                value: `<@${userId}>`,
+                inline: true,
+            },
+            {
+                name: "Κανάλι Ticket",
+                value: `<#${channelId}>`,
+                inline: true,
+            }
+        ])
 }
