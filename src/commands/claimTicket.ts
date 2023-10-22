@@ -9,7 +9,7 @@ export class ClaimTicketCommand extends Command {
             name: 'claim-ticket',
             aliases: ['claimticket'],
             description: 'Claims this ticket',
-            preconditions: ['TicketChannelPrecondition'],
+            preconditions: ['TicketChannelPrecondition', 'StaffPrecondition'],
             requiredClientPermissions: ['ManageChannels','ManageRoles']
         });
     }

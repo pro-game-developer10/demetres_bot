@@ -8,8 +8,8 @@ export class SuggestionRejectCommand extends Command {
         super(context, {
             ...options,
             name: "Put suggestion under review",
-            // requiredUserPermissions: ['Administrator'],
-            // requiredClientPermissions: ['EmbedLinks'],
+            requiredUserPermissions: ['Administrator'],
+            requiredClientPermissions: ['EmbedLinks'],
             preconditions: ['SuggestionEmbedPrecondition']
         });
     }

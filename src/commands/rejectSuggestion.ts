@@ -8,8 +8,8 @@ export class SuggestionRejectCommand extends Command {
         super(context, {
             ...options,
             name: "Reject Suggestion",
-            // requiredUserPermissions: ['Administrator'],
-            // requiredClientPermissions: ['EmbedLinks'],
+            requiredUserPermissions: ['Administrator'],
+            requiredClientPermissions: ['EmbedLinks'],
             preconditions: ['SuggestionEmbedPrecondition']
         });
     }
