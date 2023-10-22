@@ -1,5 +1,6 @@
-import { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ButtonBuilder, ButtonStyle, OverwriteResolvable, OverwriteType, Guild } from "discord.js";
+import { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ButtonBuilder, ButtonStyle, OverwriteResolvable, OverwriteType, Guild, GuildMember} from "discord.js";
 import { dotenv } from "./dotenv";
+import { suggestionStatusColor, SuggestionStatus } from "./suggestionUtils";
 
 export namespace TicketPermissionsInfo {
     export const DonateTicketPermissions = (civilianID: string, guild: Guild): OverwriteResolvable[] => [
@@ -51,6 +52,33 @@ export namespace TicketPermissionsInfo {
             type: OverwriteType.Role,
             id: dotenv("JOB_MANAGER_ROLE_ID"),
             allow: ["ViewChannel"]
+        }
+    ]
+    export const WFSVCChannelPermissions = (civilianID: string, guild: Guild): OverwriteResolvable[] => [
+        {
+            type: OverwriteType.Member,
+            id: civilianID,
+            allow: ["ViewChannel","Stream"]
+        },
+        {
+            type: OverwriteType.Role,
+            id: guild.roles.everyone,
+            deny: ["ViewChannel"]
+        },
+        {
+            type: OverwriteType.Role,
+            id: dotenv("STAFF_ROLE_ID"),
+            allow: ["ViewChannel","MuteMembers","DeafenMembers","MoveMembers","Stream"]
+        },
+        {
+            type: OverwriteType.Role,
+            id: dotenv("JOB_MANAGER_ROLE_ID"),
+            allow: ["ViewChannel","MuteMembers","DeafenMembers","MoveMembers","Stream"]
+        },
+        {
+            type: OverwriteType.Role,
+            id: dotenv("DONATE_MANAGER_ROLE_ID"),
+            allow: ["ViewChannel","MuteMembers","DeafenMembers","MoveMembers","Stream"]
         }
     ]
 }
@@ -154,9 +182,33 @@ export namespace EmbedTemplate {
                 inline: true,
             },
             {
-                name: "Κανάλι Ticket",
+                name: "Κανάλι Support",
                 value: `<#${channelId}>`,
                 inline: true,
             }
         ])
+    export const UserSuggestion = (member: GuildMember, suggestion: string, suggestionStatus?: SuggestionStatus) => new EmbedBuilder()
+        .setColor(suggestionStatusColor(suggestionStatus ?? SuggestionStatus.Pending))
+        .setAuthor({
+            name: member.nickname ?? member.user.displayName,
+            iconURL: member.avatarURL() ?? "https://cdn.discordapp.com/attachments/1142540077407424512/1160585371642503228/giphy.gif?ex=653e6cdb&is=652bf7db&hm=a51f5f6544b2ab96bd308f3c25d0e89900f7b7133095efdc402ca13d1c3305f5&"
+        })
+        .setTitle("Suggestion")
+        .setDescription(suggestion)
+        .addFields([
+            {
+                name: "Χρήστης",
+                value: `<@${member.user.id}>`,
+                inline: true,
+            },
+            {
+                name: "Κατάσταση",
+                value: suggestionStatus ?? SuggestionStatus.Pending,
+                inline: true,
+            }
+        ])
+        .setFooter({
+            "iconURL": "https://cdn.discordapp.com/attachments/1142540077407424512/1160585371642503228/giphy.gif?ex=653e6cdb&is=652bf7db&hm=a51f5f6544b2ab96bd308f3c25d0e89900f7b7133095efdc402ca13d1c3305f5&",
+            "text": `Astral Roleplay ||${member.user.id}||`
+        })
 }

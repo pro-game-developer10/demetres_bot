@@ -54,12 +54,6 @@ export class TicketSelectionHandler extends InteractionHandler {
             reason: `Ticket που φτιάχτηκε από τον user ${interaction.user.username}`,
             permissionOverwrites: ticketInfo.permissions
         })
-        await interaction.guild?.channels.fetch(dotenv("SUPPORT_LOGS_CHANNEL_ID"))?.then(channel => {
-            if (channel?.isTextBased()) channel.send({
-                content: ticketInfo.mentions[1],
-                embeds: [EmbedTemplate.UserSupportNeeded(interaction.user.id,ticketChannel?.id!)]
-            })
-        })
         await ticketChannel?.send({
             content: ticketInfo.mentions.join("|"),
             embeds: [EmbedTemplate.TicketCreationEmbedTemplate(interaction.user.id)],
