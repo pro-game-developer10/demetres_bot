@@ -9,8 +9,7 @@ export class TemplateCommand extends Command {
             name: "template",
             description: "sends an embed using a specified template",
             requiredUserPermissions: ['Administrator'],
-            requiredClientPermissions: ['EmbedLinks'],
-            preconditions: ['AntiLinkPrecondition']
+            requiredClientPermissions: ['EmbedLinks']
         });
     }
     public override registerApplicationCommands(registry: Command.Registry) {
@@ -24,7 +23,7 @@ export class TemplateCommand extends Command {
                     })
                     .setDescription("The ID matching the template you want to send")
                 )
-        );
+        , { idHints: ["1163164349314109481"] });
     }
     public async messageRun(message: Message, args: Args) {
         const id = await args.pick("string")

@@ -3,23 +3,6 @@ import { dotenv } from "./dotenv";
 import { suggestionStatusColor, SuggestionStatus } from "./suggestionUtils";
 
 export namespace TicketPermissionsInfo {
-    export const DonateTicketPermissions = (civilianID: string, guild: Guild): OverwriteResolvable[] => [
-        {
-            type: OverwriteType.Member,
-            id: civilianID,
-            allow: ["ViewChannel"]
-        },
-        {
-            type: OverwriteType.Role,
-            id: guild.roles.everyone,
-            deny: ["ViewChannel"]
-        },
-        {
-            type: OverwriteType.Role,
-            id: dotenv("DONATE_MANAGER_ROLE_ID"),
-            allow: ["ViewChannel"]
-        }
-    ]
     export const SupportTicketPermissions = (civilianID: string, guild: Guild): OverwriteResolvable[] => [
         {
             type: OverwriteType.Member,
@@ -34,6 +17,23 @@ export namespace TicketPermissionsInfo {
         {
             type: OverwriteType.Role,
             id: dotenv("STAFF_ROLE_ID"),
+            allow: ["ViewChannel"]
+        }
+    ]
+    export const DonateTicketPermissions = (civilianID: string, guild: Guild): OverwriteResolvable[] => [
+        {
+            type: OverwriteType.Member,
+            id: civilianID,
+            allow: ["ViewChannel"]
+        },
+        {
+            type: OverwriteType.Role,
+            id: guild.roles.everyone,
+            deny: ["ViewChannel"]
+        },
+        {
+            type: OverwriteType.Role,
+            id: dotenv("DONATE_MANAGER_ROLE_ID"),
             allow: ["ViewChannel"]
         }
     ]
@@ -52,6 +52,33 @@ export namespace TicketPermissionsInfo {
             type: OverwriteType.Role,
             id: dotenv("JOB_MANAGER_ROLE_ID"),
             allow: ["ViewChannel"]
+        }
+    ]
+    export const ClaimedTicketPermissions = (staffId: string, guild: Guild): OverwriteResolvable[] => [
+        {
+            type: OverwriteType.Member,
+            id: staffId,
+            allow: ["ViewChannel"]
+        },
+        {
+            type: OverwriteType.Role,
+            id: guild.roles.everyone,
+            deny: ["ViewChannel"]
+        },
+        {
+            type: OverwriteType.Role,
+            id: dotenv("STAFF_ROLE_ID"),
+            deny: ["ViewChannel"],
+        },
+        {
+            type: OverwriteType.Role,
+            id: dotenv("JOB_MANAGER_ROLE_ID"),
+            deny: ["ViewChannel"]
+        },
+        {
+            type: OverwriteType.Role,
+            id: dotenv("DONATE_MANAGER_ROLE_ID"),
+            deny: ["ViewChannel"]
         }
     ]
     export const WFSVCChannelPermissions = (civilianID: string, guild: Guild): OverwriteResolvable[] => [
@@ -155,8 +182,7 @@ export namespace EmbedTemplate {
             new ButtonBuilder()
                 .setCustomId("claim_ticket")
                 .setStyle(ButtonStyle.Primary)
-                .setLabel("Claim Ticket (Soon!)")
-                .setDisabled(true)
+                .setLabel("Claim Ticket")
                 .setEmoji("1163175068361293905"),
         ])
     export const NotATicketErrorEmbed = new EmbedBuilder()

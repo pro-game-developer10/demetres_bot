@@ -39,12 +39,18 @@ export async function parseMemberFromSuggestionEmbed(msg: Message): Promise<Guil
     return await msg.guild?.members.fetch({ user: userID })!
 }
 
-export const suggestionStatusesMap = new Map<SuggestionStatus,[string,string]>()
-    .set(SuggestionStatus.Approved, ["approve suggestion", "approved"])
-    .set(SuggestionStatus.UnderReview, ["put suggestion under review", "under review"])
-    .set(SuggestionStatus.Rejected, ["reject suggestion", "rejected"])
+// export const suggestionStatusesMap = () => { 
+//     const map = new Map<SuggestionStatus,[string,string]>()
+//     map.set(SuggestionStatus.Approved, ["approve suggestion", "approved"])
+//     map.set(SuggestionStatus.UnderReview, ["put suggestion under review", "under review"])
+//     map.set(SuggestionStatus.Rejected, ["reject suggestion", "rejected"])
+//     return map
+// }
 
-export const reverseSuggestionStatusesMap = new Map<string,[SuggestionStatus,string]>()
-    .set("approve suggestion", [SuggestionStatus.Approved, "approved"])
-    .set("put suggestion under review", [SuggestionStatus.UnderReview, "under review"])
-    .set("reject suggestion", [SuggestionStatus.Rejected, "rejected"])
+// export const reverseSuggestionStatusesMap = () => { 
+//     const map = new Map<string,[SuggestionStatus,string]>()
+//     map.set("approve suggestion", [SuggestionStatus.Approved, "approved"])
+//     map.set("put suggestion under review", [SuggestionStatus.UnderReview, "under review"])
+//     map.set("reject suggestion", [SuggestionStatus.Rejected, "rejected"])
+//     return map
+// }

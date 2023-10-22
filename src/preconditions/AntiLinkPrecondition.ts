@@ -128,6 +128,6 @@ export class AntiLinkPrecondition extends Precondition {
 }
 declare module '@sapphire/framework' {
     interface Preconditions {
-        AntiLinkPrecondition: never;
+        AntiLinkPrecondition: never
     }
 }
