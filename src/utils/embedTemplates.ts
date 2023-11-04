@@ -1,6 +1,8 @@
-import { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ButtonBuilder, ButtonStyle, OverwriteResolvable, OverwriteType, Guild, GuildMember} from "discord.js";
+import { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ButtonBuilder, ButtonStyle, OverwriteResolvable, OverwriteType, Guild, GuildMember } from "discord.js";
 import { dotenv } from "./dotenv";
 import { suggestionStatusColor, SuggestionStatus } from "./suggestionUtils";
+import { logoUrl } from "./logoUrl";
+import { EmbedVerificationUtils } from "./embedVerification";
 
 export namespace TicketPermissionsInfo {
     export const SupportTicketPermissions = (civilianID: string, guild: Guild): OverwriteResolvable[] => [
@@ -138,7 +140,7 @@ export namespace EmbedTemplate {
         .setColor(0xFF0000)
         .setAuthor({
             name: "AstralRP",
-            iconURL: "https://cdn.discordapp.com/attachments/1142540077407424512/1160585371642503228/giphy.gif?ex=653e6cdb&is=652bf7db&hm=a51f5f6544b2ab96bd308f3c25d0e89900f7b7133095efdc402ca13d1c3305f5&"
+            iconURL: logoUrl()
         })
         .setTitle("Error")
         .setDescription(`Couldn't find template with id of ${id}`)
@@ -146,7 +148,7 @@ export namespace EmbedTemplate {
         .setColor(0x2a9bf2)
         .setAuthor({
             name: "Astral RolePlay",
-            iconURL: "https://cdn.discordapp.com/attachments/1142540077407424512/1160585371642503228/giphy.gif?ex=653e6cdb&is=652bf7db&hm=a51f5f6544b2ab96bd308f3c25d0e89900f7b7133095efdc402ca13d1c3305f5&"
+            iconURL: logoUrl()
         })
         .setTitle("Support Ticket")
         .setDescription("<:support:1163175087562829876> Επιλέξτε μια κατηγορία με την οποία θα μπορούσαμε να σας βοηθήσουμε και θα σας εξυπηρετήσουμε όσον τον δυνατόν γρηγορότερα!\n<:info:1163175068361293905> Επίσης μην κάνετε άσκοπα/troll tickets")
@@ -161,7 +163,7 @@ export namespace EmbedTemplate {
         .setColor(0x2a9bf2)
         .setAuthor({
             name: "Astral RolePlay",
-            iconURL: "https://cdn.discordapp.com/attachments/1142540077407424512/1160585371642503228/giphy.gif?ex=653e6cdb&is=652bf7db&hm=a51f5f6544b2ab96bd308f3c25d0e89900f7b7133095efdc402ca13d1c3305f5&"
+            iconURL: logoUrl()
         })
         .setTitle("Ticket φτιάχτηκε επιτυχώς!")
         .setDescription("<:support:1163175087562829876> Υπομονή! Θα σας εξυπηρετήσουμε σύντομα!")
@@ -183,13 +185,14 @@ export namespace EmbedTemplate {
                 .setCustomId("claim_ticket")
                 .setStyle(ButtonStyle.Primary)
                 .setLabel("Claim Ticket")
-                .setEmoji("1163175068361293905"),
+                .setEmoji("1163175068361293905")
+                .setDisabled(true),
         ])
     export const NotATicketErrorEmbed = new EmbedBuilder()
         .setColor(0xFF0000)
         .setAuthor({
             name: "Astral RolePlay",
-            iconURL: "https://cdn.discordapp.com/attachments/1142540077407424512/1160585371642503228/giphy.gif?ex=653e6cdb&is=652bf7db&hm=a51f5f6544b2ab96bd308f3c25d0e89900f7b7133095efdc402ca13d1c3305f5&"
+            iconURL: logoUrl()
         })
         .setTitle("Error")
         .setDescription("Για λόγους ασφαλείας, το command είναι σχεδιασμένο να λειτουργεί μόνο σε tickets")
@@ -197,7 +200,7 @@ export namespace EmbedTemplate {
         .setColor(0x2a9bf2)
         .setAuthor({
             name: "Astral RolePlay",
-            iconURL: "https://cdn.discordapp.com/attachments/1142540077407424512/1160585371642503228/giphy.gif?ex=653e6cdb&is=652bf7db&hm=a51f5f6544b2ab96bd308f3c25d0e89900f7b7133095efdc402ca13d1c3305f5&"
+            iconURL: logoUrl()
         })
         .setTitle("Ένας χρήστης χρειάζεται βοήθεια!")
         .setDescription("<:info:1163175068361293905> Ένας χρήστης χρειάζεται βοήθεια! Παρακαλώ πηγαίνετε να τον εξυπηρετήσετε!")
@@ -217,7 +220,7 @@ export namespace EmbedTemplate {
         .setColor(suggestionStatusColor(suggestionStatus ?? SuggestionStatus.Pending))
         .setAuthor({
             name: member.nickname ?? member.user.displayName,
-            iconURL: member.avatarURL() ?? "https://cdn.discordapp.com/attachments/1142540077407424512/1160585371642503228/giphy.gif?ex=653e6cdb&is=652bf7db&hm=a51f5f6544b2ab96bd308f3c25d0e89900f7b7133095efdc402ca13d1c3305f5&"
+            iconURL: member.avatarURL() ?? logoUrl()
         })
         .setTitle("Suggestion")
         .setDescription(suggestion)
@@ -234,7 +237,52 @@ export namespace EmbedTemplate {
             }
         ])
         .setFooter({
-            "iconURL": "https://cdn.discordapp.com/attachments/1142540077407424512/1160585371642503228/giphy.gif?ex=653e6cdb&is=652bf7db&hm=a51f5f6544b2ab96bd308f3c25d0e89900f7b7133095efdc402ca13d1c3305f5&",
+            "iconURL": logoUrl(),
             "text": `Astral Roleplay ||${member.user.id}||`
         })
+    export interface EmbedGenOptions {
+        profile: EmbedVerificationUtils.EmbedAuthorProfile,
+        member: GuildMember,
+        colorType: EmbedVerificationUtils.EmbedColorType,
+        title?: string,
+        description?: string,
+        footer?: string,
+        footerIcon?: boolean
+    }
+    export const EmbedGen = ({ profile, member, colorType, title, description, footer, footerIcon }: EmbedGenOptions) => {
+        const builder = new EmbedBuilder()
+        switch (profile) {
+            case EmbedVerificationUtils.EmbedAuthorProfile.Official:
+                builder.setAuthor({
+                    name: "Astral RolePlay",
+                    iconURL: logoUrl()
+                })
+                break
+            case EmbedVerificationUtils.EmbedAuthorProfile.User:
+                builder.setAuthor({
+                    name: member.user.displayName ?? member.user.username ?? "Astral Roleplay User",
+                    iconURL: member.user.displayAvatarURL() ?? member.user.avatarURL() ?? member.user.defaultAvatarURL ?? logoUrl()
+                })
+                break
+            case EmbedVerificationUtils.EmbedAuthorProfile.UserWithOfficialPFP:
+                builder.setAuthor({
+                    name: member.user.displayName ?? member.user.username ?? "Astral Roleplay User",
+                    iconURL: logoUrl()
+                })
+                break
+            case EmbedVerificationUtils.EmbedAuthorProfile.None:
+                break
+            case EmbedVerificationUtils.EmbedAuthorProfile.Team:
+                builder.setAuthor({
+                    name: "Astral RolePlay Team",
+                    iconURL: logoUrl()
+                })
+                break
+        }
+        builder.setColor(colorType)
+        if (title) builder.setTitle(title)
+        if (description) builder.setDescription(description)
+        if (footer) builder.setFooter({ text: footer, iconURL: footerIcon ? logoUrl() : undefined })
+        return builder
+    }
 }
