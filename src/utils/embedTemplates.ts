@@ -1,6 +1,6 @@
 import { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ButtonBuilder, ButtonStyle, OverwriteResolvable, OverwriteType, Guild, GuildMember } from "discord.js";
 import { dotenv } from "./dotenv";
-import { suggestionStatusColor, SuggestionStatus } from "./suggestionUtils";
+import { SuggestionUtils } from "./suggestionUtils";
 import { logoUrl } from "./logoUrl";
 import { EmbedVerificationUtils } from "./embedVerification";
 
@@ -216,8 +216,8 @@ export namespace EmbedTemplate {
                 inline: true,
             }
         ])
-    export const UserSuggestion = (member: GuildMember, suggestion: string, suggestionStatus?: SuggestionStatus) => new EmbedBuilder()
-        .setColor(suggestionStatusColor(suggestionStatus ?? SuggestionStatus.Pending))
+    export const UserSuggestion = (member: GuildMember, suggestion: string, suggestionStatus?: SuggestionUtils.SuggestionStatus) => new EmbedBuilder()
+        .setColor(SuggestionUtils.suggestionStatusColor(suggestionStatus ?? SuggestionUtils.SuggestionStatus.Pending))
         .setAuthor({
             name: member.nickname ?? member.user.displayName,
             iconURL: member.avatarURL() ?? logoUrl()
@@ -232,7 +232,7 @@ export namespace EmbedTemplate {
             },
             {
                 name: "Κατάσταση",
-                value: suggestionStatus ?? SuggestionStatus.Pending,
+                value: suggestionStatus ?? SuggestionUtils.SuggestionStatus.Pending,
                 inline: true,
             }
         ])

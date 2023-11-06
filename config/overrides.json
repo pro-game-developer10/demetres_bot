@@ -1,0 +1,25 @@
+{
+    "root": "./config/",
+    "configPaths": [
+        {
+            "type": "bot-config",
+            "fileType": "json",
+            "path": "./bot-config.json"
+        },
+        {
+            "type": "channels",
+            "fileType": "json",
+            "path": "./channels.json"
+        },
+        {
+            "type": "roles",
+            "fileType": "json",
+            "path": "./roles.json"
+        },
+        {
+            "type": "plugins",
+            "fileType": "json",
+            "path": "./plugins.json"
+        }
+    ]
+}

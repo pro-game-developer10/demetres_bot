@@ -1,7 +1,10 @@
 import { configDotenv } from 'dotenv';
-import { DotEnvFallbacks } from '../data/dotenv_defaults';
+import { DotEnvFallbacks } from '../data/dotenvDefaults';
 export function isValidDotenvKey(key: DotEnvKey | string): key is DotEnvKey {
     return Object.prototype.hasOwnProperty.call(DotEnvFallbacks, key)
+}
+function isError(input: unknown): input is Error {
+    return (input instanceof Error)
 }
 export type DotEnvKey =
     | "TOKEN"
@@ -20,7 +23,9 @@ export function dotenv(key: DotEnvKey) {
     const env = configDotenv()
     const processEnv = env.parsed!
     if (env.error) throw env.error
-    if (DotEnvFallbacks[key] instanceof Error) throw DotEnvFallbacks[key]
-    if (processEnv[key]) return DotEnvFallbacks[key]
-    return String(processEnv[key])
+    if (processEnv[key]) return String(processEnv[key])
+    else {
+        if (isError(DotEnvFallbacks[key])) throw new Error(DotEnvFallbacks[key])
+        else return DotEnvFallbacks[key]
+    }
 }

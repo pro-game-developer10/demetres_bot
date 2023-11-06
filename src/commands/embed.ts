@@ -36,8 +36,8 @@ export class EmbedCommand extends Command {
             embeds: [EmbedTemplate.EmbedGen(options)]
         })
     }
-    // TODO: Add slash command support
-    public async chatInputRun(interaction: Command.ChatInputCommandInteraction) { 
+    // TOAD: Add slash command support
+    public async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
         return await interaction.reply("Not implemented. (Yet...)")
     }
 }

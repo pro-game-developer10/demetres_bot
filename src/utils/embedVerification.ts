@@ -20,7 +20,7 @@ export namespace EmbedVerificationUtils {
         profile: EmbedColorType
     }
     export const possibleColorTypeValues = ["red", "orange", "yellow", "lime", "blue", "purple", "none"]
-    // TODO: Switched to a map based approach and remove the switch statement entirely
+    // TOAD: Switched to a map based approach and remove the switch statement entirely
     export function verifyColorType(colorName: string): ColorTypeVerificationResult {
         let result = { isValid: true, profile: EmbedColorType.None }
         switch (colorName.toLowerCase()) {

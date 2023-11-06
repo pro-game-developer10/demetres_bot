@@ -1,7 +1,7 @@
 import { Command } from '@sapphire/framework';
 import { EmbedTemplate } from '../utils/embedTemplates';
 import { ApplicationCommandType } from 'discord.js';
-import { SuggestionStatus, parseMemberFromSuggestionEmbed } from '../utils/suggestionUtils';
+import { SuggestionUtils } from '../utils/suggestionUtils';
 
 export class SuggestionRejectCommand extends Command {
     public constructor(context: Command.Context, options: Command.Options) {
@@ -23,7 +23,7 @@ export class SuggestionRejectCommand extends Command {
         if (!interaction.isMessageContextMenuCommand()) return
         const embed = interaction.targetMessage.embeds[0]
         await interaction.targetMessage.edit({
-            embeds: [EmbedTemplate.UserSuggestion(await parseMemberFromSuggestionEmbed(interaction.targetMessage),embed.description!,SuggestionStatus.UnderReview)]
+            embeds: [EmbedTemplate.UserSuggestion(await SuggestionUtils.parseMemberFromSuggestionEmbed(interaction.targetMessage),embed.description!,SuggestionUtils.SuggestionStatus.UnderReview)]
         })
         return await interaction.reply({ content: "Suggestion marked as put under review!", ephemeral: true })
     }

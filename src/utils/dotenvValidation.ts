@@ -1,9 +1,8 @@
 import { ZodType, z } from "zod"
 import { DotEnvKey, dotenv, isValidDotenvKey } from "./dotenv"
-import { DotEnvFallbacks } from "../data/dotenv_defaults"
 
 type DotEnvSchemaKeys = {
-  [K in DotEnvKey]?: ZodType
+    [K in DotEnvKey]?: ZodType
 }
 const dotEnvSchema: DotEnvSchemaKeys = {
     ANTILINK_CHANNEL_ALLOWLIST: z.string().optional(),
@@ -22,12 +21,6 @@ const dotEnvSchema: DotEnvSchemaKeys = {
 export function validateDotenv() {
     for (const key in dotEnvSchema) {
         if (!isValidDotenvKey(key)) continue
-        try {
-            dotEnvSchema[key as DotEnvKey]?.parse(dotenv(key))
-        } catch (err) {
-            // TODO: Error handling
-        } finally {
-            let parsedValue = dotEnvSchema[key as DotEnvKey]?.parse(dotenv(key))
-        }
+        dotEnvSchema[key as DotEnvKey]?.parse(dotenv(key))
     }
 }

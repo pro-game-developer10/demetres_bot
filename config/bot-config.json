@@ -1,0 +1,6 @@
+{
+    "root": "./",
+    "dotenvOverride": {
+        "path": ".env"
+    }
+}

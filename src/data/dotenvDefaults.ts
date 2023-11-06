@@ -1,5 +1,5 @@
 export namespace DotEnvFallbacks {
-    export const TOKEN = new Error("Token Not Defined! Please configure the '.env' file correctly!")
+    export const TOKEN = "Token Not Defined! Please configure the '.env' file correctly!"
     export const NON_SLASH_PREFIX = "!"
     export const [
         SUPPORT_CATEGORY_ID,
@@ -11,6 +11,6 @@ export namespace DotEnvFallbacks {
         SUGGESTIONS_CHANNEL_ID
     ] = ["0", "0", "0", "0", "0", "0", "0"]
     export const ANTILINK_CHANNEL_ALLOWLIST = ""
-    export const FALLBACK_LOGO_URL = null
-    export const DEFAULT_GUILD_ID = null
+    export const FALLBACK_LOGO_URL = ""
+    export const DEFAULT_GUILD_ID = ""
 }

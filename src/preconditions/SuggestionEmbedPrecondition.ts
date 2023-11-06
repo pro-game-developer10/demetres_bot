@@ -1,7 +1,7 @@
 import { Precondition } from '@sapphire/framework'
 import { ContextMenuCommandInteraction } from 'discord.js'
 import { dotenv } from '../utils/dotenv'
-import { SuggestionStatus, parseSuggestionStatusFromColor } from '../utils/suggestionUtils'
+import { SuggestionUtils } from '../utils/suggestionUtils'
 
 export class SuggestionEmbedPrecondition extends Precondition {
     public override async contextMenuRun(interaction: ContextMenuCommandInteraction) {
@@ -14,23 +14,23 @@ export class SuggestionEmbedPrecondition extends Precondition {
             interaction.targetMessage.author.id != interaction.client.user.id
         ) return this.error({ message: "This message is not a suggestion" })
         const embed = interaction.targetMessage.embeds[0]
-        const suggestionStatus = parseSuggestionStatusFromColor(embed)
+        const suggestionStatus = SuggestionUtils.parseSuggestionStatusFromColor(embed)
         if (this.checkStatusAndCommandMatch(suggestionStatus,interaction.commandName)) return this.error({ message: `This suggestion is already ${this.translateSuggestionStatus(suggestionStatus)[1]}` })
         if (!interaction.targetMessage.editable) return this.error({ message: `This suggestion cannot be marked as ${this.translateSuggestionStatus(suggestionStatus)[1]} by the bot because it doesn't have the appropriate permissions` })
         return this.ok()
     }
-    private checkStatusAndCommandMatch(status: SuggestionStatus, command: string): boolean {
+    private checkStatusAndCommandMatch(status: SuggestionUtils.SuggestionStatus, command: string): boolean {
         return this.translateSuggestionStatus(status)[0] == command
     }
-    private translateSuggestionStatus(status: SuggestionStatus): [string,string] {
+    private translateSuggestionStatus(status: SuggestionUtils.SuggestionStatus): [string,string] {
         switch (status) {
-            case SuggestionStatus.Rejected:
+            case SuggestionUtils.SuggestionStatus.Rejected:
                 return ["reject suggestion", "rejected"]
-            case SuggestionStatus.Approved:
+            case SuggestionUtils.SuggestionStatus.Approved:
                 return ["approve suggestion", "approved"]
-            case SuggestionStatus.Pending:
+            case SuggestionUtils.SuggestionStatus.Pending:
                 return ["", "pending"]
-            case SuggestionStatus.UnderReview:
+            case SuggestionUtils.SuggestionStatus.UnderReview:
                 return ["put suggestion under review", "put under review"]
             default:
                 return ["", ("unknown" as never)]
