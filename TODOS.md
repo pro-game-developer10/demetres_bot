@@ -3,10 +3,10 @@
 > ## 1. Add support for configuration files
 >
 > 1) ~~Add utilities for .json files~~
-> 2) Add wrapper functions
+> 2) ~~Add wrapper functions~~
 > 3) Add schema safety (zod)
-> 4) yml file support
-> 5) .env file support
+> 4) ~~yml file support~~ **[REVISE]**
+> 5) ~~.env file support~~ **[REVISE]**
 >
 > ## 2. Add support for plugins
 >
@@ -19,6 +19,7 @@
 >
 > 1) Write the tests
 > 2) Add CI/CD support
+> 3) Add comments to code
 >
 > ## 5. Implement CLI Tools
 >

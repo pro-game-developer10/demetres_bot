@@ -1,5 +1,7 @@
-import { configDotenv } from 'dotenv';
+import fs from 'node:fs'
+import { parse as parseDotenv } from 'dotenv';
 import { DotEnvFallbacks } from '../data/dotenvDefaults';
+import { ConfigUtils } from './json/configUtils';
 export function isValidDotenvKey(key: DotEnvKey | string): key is DotEnvKey {
     return Object.prototype.hasOwnProperty.call(DotEnvFallbacks, key)
 }
@@ -20,12 +22,21 @@ export type DotEnvKey =
     | "ANTILINK_CHANNEL_ALLOWLIST"
     | "NON_SLASH_PREFIX"
 export function dotenv(key: DotEnvKey) {
-    const env = configDotenv()
-    const processEnv = env.parsed!
-    if (env.error) throw env.error
-    if (processEnv[key]) return String(processEnv[key])
-    else {
-        if (isError(DotEnvFallbacks[key])) throw new Error(DotEnvFallbacks[key])
-        else return DotEnvFallbacks[key]
-    }
+    if (process.env[key]) return String(process.env[key])
+    else throw new Error(`No such key as "${key}" was found in the ${ConfigUtils.getDotenvPath()} file`)
+}
+export function dotenvInit() {
+    const envBuf = fs.readFileSync(ConfigUtils.getDotenvPath())
+    const env = parseDotenv(envBuf.toString())
+    const dotenvKeys = Object.keys(DotEnvFallbacks)
+    dotenvKeys.forEach(key => {
+        const dkey = key as DotEnvKey
+        if (env[dkey]) {
+            env[dkey] = String(env[dkey])
+            return
+        }
+        if (!isError(DotEnvFallbacks[dkey])) env[dkey] = DotEnvFallbacks[dkey]
+        else throw new Error(DotEnvFallbacks[dkey])
+    })
+    return env
 }

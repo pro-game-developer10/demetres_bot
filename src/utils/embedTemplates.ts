@@ -151,7 +151,10 @@ export namespace EmbedTemplate {
             iconURL: logoUrl()
         })
         .setTitle("Support Ticket")
-        .setDescription("<:support:1163175087562829876> Επιλέξτε μια κατηγορία με την οποία θα μπορούσαμε να σας βοηθήσουμε και θα σας εξυπηρετήσουμε όσον τον δυνατόν γρηγορότερα!\n<:info:1163175068361293905> Επίσης μην κάνετε άσκοπα/troll tickets")
+        .setDescription(
+            "<:support:1163175087562829876> Επιλέξτε μια κατηγορία με την οποία θα μπορούσαμε να σας βοηθήσουμε και θα σας εξυπηρετήσουμε όσον τον δυνατόν γρηγορότερα!\n" +
+            "<:info:1163175068361293905> Επίσης μην κάνετε άσκοπα/troll tickets"
+        )
     export const TicketSelectMenu = new ActionRowBuilder()
         .addComponents([
             new StringSelectMenuBuilder()

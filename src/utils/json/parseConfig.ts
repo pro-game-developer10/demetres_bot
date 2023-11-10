@@ -1,10 +1,10 @@
-import fs from "node:fs/promises";
+import fs from "node:fs";
 import path from "node:path";
-import BotConfig from "../../types/config/bot-config";
-import ChannelConfig from "../../types/config/channels";
-import OverridesConfig from "../../types/config/overrides";
-import PluginsConfig from "../../types/config/plugins";
-import RolesConfig from "../../types/config/roles";
+import BotConfig, { botConfigSchema } from "../../types/config/bot-config";
+import ChannelConfig, { channelsConfigSchema } from "../../types/config/channels";
+import OverridesConfig, { overridesConfigSchema } from "../../types/config/overrides";
+import PluginsConfig, { pluginsConfigSchema } from "../../types/config/plugins";
+import RolesConfig, { rolesConfigSchema } from "../../types/config/roles";
 import { JSONConfigDefaults } from "../../data/jsonConfigDefaults";
 
 export namespace JSONConfig {
@@ -14,7 +14,7 @@ export namespace JSONConfig {
         "./config/overrides.json"
     );
 
-    enum ConfigType {
+    export enum ConfigType {
         BOT_CONFIG = "bot-config",
         CHANNELS = "channels",
         OVERRIDES = "overrides",
@@ -22,7 +22,7 @@ export namespace JSONConfig {
         ROLES = "roles",
     }
 
-    type ConfigJSON<C extends ConfigType> =
+    export type ConfigJSON<C extends ConfigType> =
         | C extends ConfigType.BOT_CONFIG
         ? BotConfig
         : C extends ConfigType.CHANNELS
@@ -35,19 +35,19 @@ export namespace JSONConfig {
         ? RolesConfig
         : never;
 
-    interface ConfigsAll {
+    export interface ConfigsAll {
         [configType: string]: Partial<ConfigJSON<ConfigType>>;
         bot: ConfigJSON<ConfigType.BOT_CONFIG>;
-        channels: ConfigJSON<ConfigType.BOT_CONFIG>;
-        overrides: ConfigJSON<ConfigType.BOT_CONFIG>;
-        plugins: ConfigJSON<ConfigType.BOT_CONFIG>;
-        roles: ConfigJSON<ConfigType.BOT_CONFIG>;
+        channels: ConfigJSON<ConfigType.CHANNELS>;
+        overrides: ConfigJSON<ConfigType.OVERRIDES>;
+        plugins: ConfigJSON<ConfigType.PLGUINS>;
+        roles: ConfigJSON<ConfigType.ROLES>;
     }
-    type ConfigPathsAll = {
+    export type ConfigPathsAll = {
         [P in keyof ConfigsAll]: string
     }
-    export async function configPaths() {
-        const fileBuffer = await fs.readFile(OVERRIDES_CONFIG_FILE_PATH)
+    export function configPaths() {
+        const fileBuffer = fs.readFileSync(OVERRIDES_CONFIG_FILE_PATH)
         const contents = JSON.parse(fileBuffer.toString()) as OverridesConfig
         const fallbacks = {
             botPath: JSONConfigDefaults.OVERRIDES.configPaths.filter(path => path.type === "bot-config")[0].path,
@@ -68,15 +68,20 @@ export namespace JSONConfig {
         };
         return paths
     }
-    export async function parseConfigs() {
-        const paths = await configPaths()
+    export function parseConfigs() {
+        const paths = configPaths()
         const fileConfigs = {
-            bot: JSON.parse((await fs.readFile(paths.bot)).toString()) as ConfigJSON<ConfigType.BOT_CONFIG>,
-            channels: JSON.parse((await fs.readFile(paths.channels)).toString()) as ConfigJSON<ConfigType.CHANNELS>,
-            overrides: JSON.parse((await fs.readFile(paths.overrides)).toString()) as ConfigJSON<ConfigType.OVERRIDES>,
-            plugins: JSON.parse((await fs.readFile(paths.plugins)).toString()) as ConfigJSON<ConfigType.PLGUINS>,
-            roles: JSON.parse((await fs.readFile(paths.roles)).toString()) as ConfigJSON<ConfigType.ROLES>,
-        };
+            bot: JSON.parse(fs.readFileSync(paths.bot).toString()) as ConfigJSON<ConfigType.BOT_CONFIG>,
+            channels: JSON.parse(fs.readFileSync(paths.channels).toString()) as ConfigJSON<ConfigType.CHANNELS>,
+            overrides: JSON.parse(fs.readFileSync(paths.overrides).toString()) as ConfigJSON<ConfigType.OVERRIDES>,
+            plugins: JSON.parse(fs.readFileSync(paths.plugins).toString()) as ConfigJSON<ConfigType.PLGUINS>,
+            roles: JSON.parse(fs.readFileSync(paths.roles).toString()) as ConfigJSON<ConfigType.ROLES>,
+        }
+        botConfigSchema().parse(fileConfigs.bot)
+        channelsConfigSchema().parse(fileConfigs.channels)
+        overridesConfigSchema().parse(fileConfigs.overrides)
+        pluginsConfigSchema().parse(fileConfigs.plugins)
+        rolesConfigSchema().parse(fileConfigs.roles)
         return fileConfigs
     }
 }

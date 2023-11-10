@@ -56,11 +56,28 @@ export namespace EmbedVerificationUtils {
         profile: EmbedAuthorProfile
     }
     export const possibleAuthorProfileValues = {
-        official: [EmbedAuthorProfile.Official.toLowerCase(), "official", "server"],
-        user: [EmbedAuthorProfile.User.toLowerCase(), "user", "member", "self"],
-        officialUser: [EmbedAuthorProfile.UserWithOfficialPFP.toLowerCase(), "userofficial", "userasofficial", "userwithofficialpfp", "officialuser", "memberofficial", "memberasofficial", "memberwithofficialpfp", "officialmember", "selfofficial", "selfasofficial", "selfwithofficialpfp", "officialself"],
-        none: [EmbedAuthorProfile.None.toLowerCase(), "none", "null", "default", "noprofile"],
-        officialTeam: [EmbedAuthorProfile.Team.toLowerCase(), "officialteam", "officialserverteam", "officialguildteam", "serverteam", "guildteam"]
+        official: [
+            EmbedAuthorProfile.Official.toLowerCase(),
+            "official", "server"
+        ],
+        user: [
+            EmbedAuthorProfile.User.toLowerCase(),
+            "user", "member", "self"
+        ],
+        officialUser: [
+            EmbedAuthorProfile.UserWithOfficialPFP.toLowerCase(),
+            "userofficial", "userasofficial", "userwithofficialpfp", "officialuser",
+            "memberofficial", "memberasofficial", "memberwithofficialpfp", "officialmember",
+            "selfofficial", "selfasofficial", "selfwithofficialpfp", "officialself"
+        ],
+        none: [
+            EmbedAuthorProfile.None.toLowerCase(),
+            "none", "null", "default", "noprofile"
+        ],
+        officialTeam: [
+            EmbedAuthorProfile.Team.toLowerCase(),
+            "officialteam", "officialserverteam", "officialguildteam", "serverteam", "guildteam"
+        ]
     }
     export const getPossibleAuthorProfileValuesAsMapped = () => {
         const values = Object.values(possibleAuthorProfileValues).reduce((prev, val) => [...prev, ...val])

@@ -1,17 +1,28 @@
 import { SapphireClient } from '@sapphire/framework';
 import { GatewayIntentBits } from 'discord.js';
-import { dotenv } from './utils/dotenv';
+import { dotenv, dotenvInit } from './utils/dotenv';
 
-const client = new SapphireClient({ intents: [GatewayIntentBits.MessageContent ,GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildVoiceStates], loadMessageCommandListeners: true, defaultPrefix: "!" });
+process.env = dotenvInit()
+
+const client = new SapphireClient({
+    intents: [
+        GatewayIntentBits.MessageContent,
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.GuildVoiceStates
+    ],
+    loadMessageCommandListeners: true,
+    defaultPrefix: "!"
+});
 client.login(dotenv("TOKEN") satisfies string);
 
 // ====================================================
 // TODO: 1) Add support for configuration files
 // COMPLETED: 1.1) Add utilities for .json files
-// TODO: 1.2) Add wrapper functions
+// COMPLETED: 1.2) Add wrapper functions
 // TODO: 1.3) Add schema safety (zod)
-// TODO: 1.4) yml file support
-// TODO: 1.5) .env file support
+// REVISE: 1.4) yml file support
+// REVISE: 1.5) .env file support
 // TODO: 2) Add support for plugins
 // TODO: 2.1) File Structure of a plugin
 // TODO: 2.2) Add support for repo fetching
