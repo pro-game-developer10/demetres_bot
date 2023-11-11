@@ -27,7 +27,7 @@ export function propsOf(proppedObj: Record<string, unknown>, prefix?: string): s
         propLists.finished = joinListArrays(...propLists.finished)
         propLists.unfinished = joinListArrays(...propLists.unfinished)
         // TODO: Finish propsOf() function
-        return [...propLists.finished,...propLists.unfinished]
+        return [...prefixify(topLevelPropsResult.props, prefix),...propLists.finished,...propLists.unfinished]
     }
 }
 function joinListArrays(...lists: string[]): string[] {
