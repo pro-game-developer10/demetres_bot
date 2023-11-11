@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "@sapphire/ts-config": "^5.0.0",
+    "jest": "^29.7.0",
     "tsc-watch": "^6.0.4",
     "typescript": "^5.2.2"
   }

@@ -1,5 +1,5 @@
 import { JSONConfig } from "./parseConfig";
-import path from 'node:path'
+import path from 'node:path';
 export namespace ConfigUtils {
     export function getDotenvPath() {
         const config = JSONConfig.parseConfigs()

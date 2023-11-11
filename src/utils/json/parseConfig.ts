@@ -35,8 +35,10 @@ export namespace JSONConfig {
         ? RolesConfig
         : never;
 
-    export interface ConfigsAll {
+    export interface ConfigsAll extends ConfigsAllLimited {
         [configType: string]: Partial<ConfigJSON<ConfigType>>;
+    }
+    export interface ConfigsAllLimited {
         bot: ConfigJSON<ConfigType.BOT_CONFIG>;
         channels: ConfigJSON<ConfigType.CHANNELS>;
         overrides: ConfigJSON<ConfigType.OVERRIDES>;
