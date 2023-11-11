@@ -13,14 +13,12 @@ export default interface PluginsConfig {
  * @secondary
  */
 export const pluginsConfigSchema = () => z.object({
-    root: z.string().optional(),
+    root: z.string(),
     experimentalSupport: z.boolean().optional(),
     plugins: z.array(z.string().or(z.object({
         id: z.string(),
         flags: z.array(z.string()).or(z.record(z.boolean()).optional()).optional(),
-        config: z.union([z.object({
-            disabled: z.boolean().optional()
-        }),z.record(z.unknown())]).optional()
+        config: z.record(z.unknown()).optional()
     }))).optional()
 })
 interface Plugin {

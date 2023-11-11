@@ -4,7 +4,7 @@ import { z } from 'zod'
  * @main
  */
 export default interface RolesConfig {
-    roles: Array<string | Role>;
+    roles?: Array<string | Role>;
 }
 /**
  * Other utility types used by the main interface
@@ -15,9 +15,7 @@ export const rolesConfigSchema = () => z.object({
         id: z.string(),
         type: z.string(),
         flags: z.array(z.string()).or(z.record(z.boolean()).optional()).optional(),
-        options: z.union([z.object({
-            disabled: z.boolean().optional()
-        }),z.record(z.unknown())]).optional()
+        options: z.record(z.unknown()).optional()
     }))).optional()
 })
 interface Role {
