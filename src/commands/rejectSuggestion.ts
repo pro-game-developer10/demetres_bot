@@ -23,7 +23,12 @@ export class SuggestionRejectCommand extends Command {
         if (!interaction.isMessageContextMenuCommand()) return
         const embed = interaction.targetMessage.embeds[0]
         await interaction.targetMessage.edit({
-            embeds: [EmbedTemplate.UserSuggestion(await SuggestionUtils.parseMemberFromSuggestionEmbed(interaction.targetMessage),embed.description!,SuggestionUtils.SuggestionStatus.Rejected)]
+            embeds: [
+                EmbedTemplate.UserSuggestion(
+                    await SuggestionUtils.parseMemberFromSuggestionEmbed(interaction.targetMessage),
+                    embed.description!, SuggestionUtils.SuggestionStatus.Rejected
+                )
+            ]
         })
         return await interaction.reply({ content: "Suggestion marked as rejected!", ephemeral: true })
     }

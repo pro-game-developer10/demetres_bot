@@ -15,8 +15,12 @@ export class SuggestionEmbedPrecondition extends Precondition {
         ) return this.error({ message: "This message is not a suggestion" })
         const embed = interaction.targetMessage.embeds[0]
         const suggestionStatus = SuggestionUtils.parseSuggestionStatusFromColor(embed)
-        if (this.checkStatusAndCommandMatch(suggestionStatus,interaction.commandName)) return this.error({ message: `This suggestion is already ${this.translateSuggestionStatus(suggestionStatus)[1]}` })
-        if (!interaction.targetMessage.editable) return this.error({ message: `This suggestion cannot be marked as ${this.translateSuggestionStatus(suggestionStatus)[1]} by the bot because it doesn't have the appropriate permissions` })
+        if (this.checkStatusAndCommandMatch(suggestionStatus, interaction.commandName)) return this.error({
+            message: `This suggestion is already ${this.translateSuggestionStatus(suggestionStatus)[1]}`
+        })
+        if (!interaction.targetMessage.editable) return this.error({
+            message: `This suggestion cannot be marked as ${this.translateSuggestionStatus(suggestionStatus)[1]} by the bot because it doesn't have the appropriate permissions`
+        })
         return this.ok()
     }
     private checkStatusAndCommandMatch(status: SuggestionUtils.SuggestionStatus, command: string): boolean {

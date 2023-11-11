@@ -23,7 +23,12 @@ export class SuggestionApproveCommand extends Command {
         if (!interaction.isMessageContextMenuCommand()) return
         const embed = interaction.targetMessage.embeds[0]
         await interaction.targetMessage.edit({
-            embeds: [EmbedTemplate.UserSuggestion(await SuggestionUtils.parseMemberFromSuggestionEmbed(interaction.targetMessage),embed.description!,SuggestionUtils.SuggestionStatus.Approved)]
+            embeds: [
+                EmbedTemplate.UserSuggestion(
+                    await SuggestionUtils.parseMemberFromSuggestionEmbed(interaction.targetMessage),
+                    embed.description!, SuggestionUtils.SuggestionStatus.Approved
+                )
+            ]
         })
         return await interaction.reply({ content: "Suggestion marked as approved!", ephemeral: true })
     }

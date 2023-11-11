@@ -24,13 +24,30 @@ export class AntiLinkPrecondition extends Precondition {
         return this.ok()
     }
     public static checkMessage(messageContent: string): AntiLinkResults {
-        let strippedMessagePieces = messageContent.replace("https://", "").replace("http://", "").replace("www.", "").replace("[", " ").replace("]", " ").replace("(", " ").replace(")", " ").split(" ")
+        let strippedMessagePieces = messageContent
+            .replace("https://", "")
+            .replace("http://", "")
+            .replace("www.", "")
+            .replace("[", " ")
+            .replace("]", " ")
+            .replace("(", " ")
+            .replace(")", " ")
+            .split(" ")
         let pieceActions = strippedMessagePieces.map(piece => {
             if (piece.startsWith("tenor.com")) return AntiLinkResults.PASS
             if (piece.startsWith("cdn.discordapp.com")) return AntiLinkResults.PASS
             if (piece.startsWith("discord.com/api/v10/webhooks")) return AntiLinkResults.PASS
-            if (piece.startsWith("instagram.com/") || piece.startsWith("youtube.com/") || piece.startsWith("twitter.com/") || piece.startsWith("x.com/") || piece.startsWith("reddit.com/")) return AntiLinkResults.DELETE
-            if (piece.startsWith("discord.gg/") || piece.startsWith("discord.com/invite/")) return AntiLinkResults.TIMEOUT_30M
+            if (
+                piece.startsWith("instagram.com/")
+                || piece.startsWith("youtube.com/")
+                || piece.startsWith("twitter.com/")
+                || piece.startsWith("x.com/")
+                || piece.startsWith("reddit.com/")
+            ) return AntiLinkResults.DELETE
+            if (
+                piece.startsWith("discord.gg/")
+                || piece.startsWith("discord.com/invite/")
+            ) return AntiLinkResults.TIMEOUT_30M
             if (piece.startsWith("discord.com/api/oauth2/authorize/")) return AntiLinkResults.TIMEOUT_2H
             return AntiLinkResults.PASS
         })
