@@ -15,7 +15,6 @@ export function propsOf(proppedObj: Record<string, unknown>, prefix?: string): s
         const propLists = {
             finished: [] as string[],
             unfinished: [] as string[],
-            potentiallyFinished: [] as string[]
         }
         subLevelPropResults.forEach(result => {
             if (result.finished) propLists.finished.push(result.props.join(","))
@@ -26,9 +25,14 @@ export function propsOf(proppedObj: Record<string, unknown>, prefix?: string): s
         })
         propLists.finished = joinListArrays(...propLists.finished)
         propLists.unfinished = joinListArrays(...propLists.unfinished)
-        // TODO: Finish propsOf() function
+        // TODO: Make propsOf() infinitely deep
         return [...prefixify(topLevelPropsResult.props, prefix),...propLists.finished,...propLists.unfinished]
     }
+}
+export function getMissingProps(propList: string[], proppedObj: Record<string, unknown>): string[] {
+    const fullProps = propsOf(proppedObj)
+    const missingProps = fullProps.filter(prop => !propList.includes(prop))
+    return missingProps
 }
 function joinListArrays(...lists: string[]): string[] {
     const results: string[] = []
@@ -46,7 +50,7 @@ export function prefixifySingleProp(prop: string, prefix?: string): string {
     return prefix ? prefix + "." + prop : prop
 }
 function topLevelPropsOf(proppedObj: Record<string, unknown>, prefix?: string): PropsFoundStatus {
-    const propsAll = Object.keys(proppedObj)
+    const propsAll = Object.keys(proppedObj ?? {})
     const objProps = propsAll.filter(prop => typeof proppedObj[prop] === "object")
     const nonObjProps = propsAll.filter(prop => !objProps.includes(prop))
     return objProps.length === 0
