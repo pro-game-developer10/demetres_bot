@@ -19,8 +19,20 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@eslint/create-config": "^0.4.6",
     "@sapphire/ts-config": "^5.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.13.2",
+    "@typescript-eslint/parser": "^6.13.2",
     "@vitest/coverage-v8": "^0.34.6",
+    "eslint": "^8.55.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^17.1.0",
+    "gulp": "^4.0.2",
+    "gulp-eslint": "^6.0.0",
+    "gulp-notify": "^4.0.0",
+    "gulp-rename": "^2.0.0",
+    "gulp-typescript": "^6.0.0-alpha.1",
+    "gulp-uglify": "^3.0.2",
     "tsc-watch": "^6.0.4",
     "typescript": "^5.2.2",
     "vitest": "^0.34.6"

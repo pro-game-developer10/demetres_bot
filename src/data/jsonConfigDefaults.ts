@@ -1,18 +1,19 @@
 import BotConfig from "../types/config/bot-config";
-import ChannelConfig from "../types/config/channels";
+import MentionablesConfig from "../types/config/mentionables";
 import OverridesConfig from "../types/config/overrides";
 import PluginsConfig from "../types/config/plugins";
-import RolesConfig from "../types/config/roles";
 
 export namespace JSONConfigDefaults {
     export const BOT: Required<BotConfig> = {
         root: ".",
+        prefix: "!",
         dotenvOverride: {
+            fileType: "env",
             path: ".env",
         },
     };
-    export const CHANNELS: Required<ChannelConfig> = {
-        channels: [],
+    export const MENTIONABLES: Required<MentionablesConfig> = {
+        items: [],
     };
     export const OVERRIDES: Required<OverridesConfig> = {
         root: "./",
@@ -23,14 +24,9 @@ export namespace JSONConfigDefaults {
                 path: "./config/bot-config.json",
             },
             {
-                type: "channels",
+                type: "mentionables",
                 fileType: "json",
-                path: "./config/channels.json",
-            },
-            {
-                type: "roles",
-                fileType: "json",
-                path: "./config/roles.json",
+                path: "./config/mentionables.json",
             },
             {
                 type: "plugins",
@@ -44,7 +40,4 @@ export namespace JSONConfigDefaults {
         experimentalSupport: false,
         plugins: [],
     };
-    export const ROLES: Required<RolesConfig> = {
-        roles: [],
-    };
-};
+}

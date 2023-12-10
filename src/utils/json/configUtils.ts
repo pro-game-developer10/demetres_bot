@@ -1,54 +1,62 @@
 import { JSONConfig } from "./parseConfig";
-import path from 'node:path';
+import path from "node:path";
 import { JSONConfigDefaults } from "../../data/jsonConfigDefaults";
-import { getMissingProps, propsOf } from "../propsOf";
+import { ConfigFile } from "../../types/config/bot-config";
 export namespace ConfigUtils {
     export function getDotenvPath() {
-        const config = JSONConfig.parseConfigs()
-        const filename = config.bot.dotenvOverride?.path!
-        const root = config.bot.root
-        return path.join(JSONConfig.ROOT_PATH,root,filename)
+        const config = JSONConfig.parseConfigs();
+        const filename = config.bot.dotenvOverride?.path;
+        const { root } = config.bot;
+        return path.join(JSONConfig.ROOT_PATH, root, filename!);
     }
-    export function populateConfig(configType: JSONConfig.ConfigType, configObj: JSONConfig.ConfigJSON<typeof configType>): JSONConfig.ConfigJSON<typeof configType> {
-        const missingProps: string[] = []
-        let configDefaults = {}
-        const configPairsWithLeader: [{}, ...[string,unknown][]] = [configObj]
-        switch (configType) {
-            case JSONConfig.ConfigType.BOT_CONFIG:
-                missingProps.push(...getMissingProps(propsOf(JSONConfigDefaults.BOT),configObj as Record<string, unknown>))
-                configDefaults = JSONConfigDefaults.BOT
-                break
-            case JSONConfig.ConfigType.CHANNELS:
-                missingProps.push(...getMissingProps(propsOf(JSONConfigDefaults.CHANNELS),configObj as Record<string, unknown>))
-                configDefaults = JSONConfigDefaults.CHANNELS
-                break
-            case JSONConfig.ConfigType.OVERRIDES:
-                missingProps.push(...getMissingProps(propsOf(JSONConfigDefaults.OVERRIDES), configObj as Record<string, unknown>))
-                configDefaults = JSONConfigDefaults.OVERRIDES
-                break
-            case JSONConfig.ConfigType.PLGUINS:
-                missingProps.push(...getMissingProps(propsOf(JSONConfigDefaults.PLUGINS),configObj as Record<string, unknown>))
-                configDefaults = JSONConfigDefaults.PLUGINS
-                break
-            case JSONConfig.ConfigType.ROLES:
-                missingProps.push(...getMissingProps(propsOf(JSONConfigDefaults.ROLES), configObj as Record<string, unknown>))
-                configDefaults = JSONConfigDefaults.ROLES
-                break
-            default:
-                throw new Error("Invalid Config Type") as never
+    interface PrefixInfo {
+        prefix: string,
+        slashEnabled: boolean
+    }
+    export function getPrefixInfo(): PrefixInfo {
+        const config = JSONConfig.parseConfigs();
+        const { prefix } = config.bot;
+        return typeof prefix === "string" ? {
+            prefix,
+            slashEnabled: true
+        } : {
+            prefix: prefix.nonSlash,
+            slashEnabled: prefix.slashEnabled ?? true
         }
-        missingProps.forEach(prop => {
-            const propSet: [{}, ...string[]] = [configDefaults,...prop.split(",")]
-            const value = propSet.reduce((prev, val) => (
-                prev as Record<string,
-                    string | number |
-                    Record<string, unknown>
-                >
-            )[val as string])
-            configPairsWithLeader.push([prop,value])
-        })
-        let configFinal = configObj
-        const configPairs = configPairsWithLeader.slice(1) as [string, unknown][]
-        
+    }
+    export function parseConfigFileInfo(configObj: ConfigFile): ConfigFile {
+        let { fileType } = configObj;
+        const { path, type } = configObj
+        const validFileExtensions = ["env", "yml", "json"] as const;
+        if (!fileType)
+            fileType = path
+                .split(".")
+                .at(-1) as (typeof validFileExtensions)[number];
+        if (!validFileExtensions.includes(fileType))
+            throw new Error(`Invalid filetype: ${fileType}`);
+        return { path, fileType, type };
+    }
+    export function populateConfig(
+        configType: JSONConfig.ConfigType,
+        configObj: JSONConfig.ConfigJSON<typeof configType>
+    ): JSONConfig.ConfigJSON<typeof configType> {
+        let configDefaults = {};
+        switch (configType) {
+        case JSONConfig.ConfigType.BOT_CONFIG:
+            configDefaults = JSONConfigDefaults.BOT;
+            break;
+        case JSONConfig.ConfigType.MENTIONABLES:
+            configDefaults = JSONConfigDefaults.MENTIONABLES;
+            break;
+        case JSONConfig.ConfigType.OVERRIDES:
+            configDefaults = JSONConfigDefaults.OVERRIDES;
+            break;
+        case JSONConfig.ConfigType.PLUGINS:
+            configDefaults = JSONConfigDefaults.PLUGINS;
+            break;
+        default:
+            throw new Error("Invalid Config Type") as never;
+        }
+        return Object.assign(configDefaults, configObj);
     }
 }

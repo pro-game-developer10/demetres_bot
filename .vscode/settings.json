@@ -1,0 +1,11 @@
+{
+    "extensions.experimental.affinity": {
+        "vscodevim.vim": 1
+    },
+    "vim.handleKeys": {
+        "<C-a>": false,
+        "<C-f>": false,
+        "<C-c>": false,
+        "<C-p>": false,
+    }
+}

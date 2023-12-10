@@ -1,9 +1,9 @@
-import { ZodType, z } from "zod"
-import { DotEnvKey, dotenv, isValidDotenvKey } from "./dotenv"
+import { ZodType, z } from "zod";
+import { DotEnvKey, dotenv, isValidDotenvKey } from "./dotenv";
 
 type DotEnvSchemaKeys = {
-    [K in DotEnvKey]?: ZodType
-}
+    [K in DotEnvKey]?: ZodType;
+};
 const dotEnvSchema: DotEnvSchemaKeys = {
     ANTILINK_CHANNEL_ALLOWLIST: z.string().optional(),
     DEFAULT_GUILD_ID: z.number().optional().transform(String),
@@ -17,10 +17,10 @@ const dotEnvSchema: DotEnvSchemaKeys = {
     SUPPORT_CATEGORY_ID: z.number().optional().transform(String),
     SUPPORT_LOGS_CHANNEL_ID: z.number().optional().transform(String),
     TOKEN: z.string(),
-}
+};
 export function validateDotenv() {
     for (const key in dotEnvSchema) {
-        if (!isValidDotenvKey(key)) continue
-        dotEnvSchema[key as DotEnvKey]?.parse(dotenv(key))
+        if (!isValidDotenvKey(key)) continue;
+        dotEnvSchema[key as DotEnvKey]?.parse(dotenv(key));
     }
 }

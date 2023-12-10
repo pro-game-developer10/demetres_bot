@@ -1,0 +1,39 @@
+{
+    "items": [
+        {
+            "id": "1157575469915443331",
+            "type": "channel",
+            "flags": ["SUPPORT_CATEGORY"]
+        },
+        {
+            "id": "1157958821826805780",
+            "type": "channel",
+            "flags": ["SUPPORT_LOGS"]
+        },
+        {
+            "id": "1157575640057397348",
+            "type": "channel",
+            "flags": ["WFS_CHANNEL"]
+        },
+        {
+            "id": "1156242603268902953",
+            "type": "channel",
+            "flags": ["SUGGESTIONS_CHANNEL"]
+        },
+        {
+            "id": "1156205322545930360",
+            "type": "role",
+            "flags": ["STAFF_ROLE"]
+        },
+        {
+            "id": "1156205325985267732",
+            "type": "role",
+            "flags": ["JOB_MANAGER_ROLE"]
+        },
+        {
+            "id": "1163176036129832980",
+            "type": "role",
+            "flags": ["DONATE_MANAGER_ROLE"]
+        }
+    ]
+}

@@ -1,10 +1,10 @@
-import { Args } from "@sapphire/framework";
-import { 
-    CacheType, 
-    Message, 
-    ChatInputCommandInteraction, 
-    Client, 
-    PermissionsBitField, 
+import { Args } from "@sapphire/framework"
+import {
+    CacheType,
+    Message,
+    ChatInputCommandInteraction,
+    Client,
+    PermissionsBitField,
     ApplicationCommandType,
     Locale,
     APIInteractionGuildMember,
@@ -42,35 +42,35 @@ import {
     APIModalInteractionResponseCallbackData,
     JSONEncodable,
     ModalComponentData,
-} from "discord.js";
+} from "discord.js"
 
 export class MessageAdapter implements Omit<ChatInputCommandInteraction, "options" | "webhook" | "awaitModalSubmit"> {
-    public readonly subject: Message | ChatInputCommandInteraction;
-    public readonly isInteractionInstance: boolean;
+    public readonly subject: Message | ChatInputCommandInteraction
+    public readonly isInteractionInstance: boolean
     public readonly args: Args | undefined
-    public appPermissions: Readonly<PermissionsBitField> | null;
-    public applicationId: string;
-    public channelId: string;
-    public client: Client<true>;
-    public commandGuildId: string | null;
-    public commandId: string;
-    public commandName: string;
-    public commandType: ApplicationCommandType.ChatInput;
-    public deferred: boolean;
-    public ephemeral: boolean | null;
-    public guildId: string | null;
-    public guildLocale: Locale | null;
-    public id: string;
-    public locale: Locale;
-    public member: GuildMember | APIInteractionGuildMember | null;
-    public memberPermissions: Readonly<PermissionsBitField> | null;
-    public options: Omit<CommandInteractionOptionResolver<CacheType>, "getMessage" | "getFocused"> | null;
-    public replied: boolean;
-    public token: string;
-    public type: InteractionType.ApplicationCommand;
-    public user: User;
-    public version: number;
-    public webhook: InteractionWebhook | null;
+    public appPermissions: Readonly<PermissionsBitField> | null
+    public applicationId: string
+    public channelId: string
+    public client: Client<true>
+    public commandGuildId: string | null
+    public commandId: string
+    public commandName: string
+    public commandType: ApplicationCommandType.ChatInput
+    public deferred: boolean
+    public ephemeral: boolean | null
+    public guildId: string | null
+    public guildLocale: Locale | null
+    public id: string
+    public locale: Locale
+    public member: GuildMember | APIInteractionGuildMember | null
+    public memberPermissions: Readonly<PermissionsBitField> | null
+    public options: Omit<CommandInteractionOptionResolver<CacheType>, "getMessage" | "getFocused"> | null
+    public replied: boolean
+    public token: string
+    public type: InteractionType.ApplicationCommand
+    public user: User
+    public version: number
+    public webhook: InteractionWebhook | null
     public constructor(subject: ChatInputCommandInteraction | Message, args?: Args) {
         this.isInteractionInstance = !(subject instanceof Message)
         this.subject = subject
@@ -101,7 +101,7 @@ export class MessageAdapter implements Omit<ChatInputCommandInteraction, "option
     }
     public async awaitModalSubmit(options: AwaitModalSubmitOptions<ModalSubmitInteraction<CacheType>>): Promise<ModalSubmitInteraction<CacheType> | null> {
         if (this.isInteractionInstance) {
-            let interaction = (this.subject as ChatInputCommandInteraction)
+            const interaction = (this.subject as ChatInputCommandInteraction)
             return await interaction.awaitModalSubmit(options)
         }
         return null
@@ -109,9 +109,9 @@ export class MessageAdapter implements Omit<ChatInputCommandInteraction, "option
     public get channel(): TextBasedChannel | null {
         return this.subject.channel
     }
-    public get command(): ApplicationCommand<{}> | ApplicationCommand<{ guild: GuildResolvable; }> | null {
+    public get command(): ApplicationCommand<object> | ApplicationCommand<{ guild: GuildResolvable }> | null {
         if (this.isInteractionInstance) {
-            let interaction = this.subject as ChatInputCommandInteraction
+            const interaction = this.subject as ChatInputCommandInteraction
             return interaction.command
         }
         return null
@@ -122,47 +122,47 @@ export class MessageAdapter implements Omit<ChatInputCommandInteraction, "option
     public get createdTimestamp(): number {
         return this.subject.createdTimestamp
     }
-    public async deferReply(options: InteractionDeferReplyOptions & { fetchReply: true; }): Promise<Message<boolean>>;
-    public async deferReply(options?: InteractionDeferReplyOptions | undefined): Promise<InteractionResponse<boolean>>;
+    public async deferReply(options: InteractionDeferReplyOptions & { fetchReply: true }): Promise<Message<boolean>>
+    public async deferReply(options?: InteractionDeferReplyOptions | undefined): Promise<InteractionResponse<boolean>>
     public async deferReply(options?: unknown): Promise<Message<boolean> | import("discord.js").InteractionResponse<boolean>> {
         if (this.isInteractionInstance) {
-            let interaction = this.subject as ChatInputCommandInteraction
+            const interaction = this.subject as ChatInputCommandInteraction
             return await interaction.deferReply(options!)
         }
-        let msg = this.subject as Message
+        const msg = this.subject as Message
         await msg.channel.sendTyping()
         return msg
     }
     public async deleteReply(message?: MessageResolvable | undefined): Promise<void> {
         if (this.isInteractionInstance) {
-            let interaction = this.subject as ChatInputCommandInteraction
+            const interaction = this.subject as ChatInputCommandInteraction
             return await interaction.deleteReply(message)
         }
-        let msg = this.subject as Message
+        const msg = this.subject as Message
         if (msg.deletable) await msg.delete()
     }
     public async editReply(options: string | MessagePayload | InteractionEditReplyOptions): Promise<Message<boolean>> {
         if (this.isInteractionInstance) {
-            let interaction = this.subject as ChatInputCommandInteraction
+            const interaction = this.subject as ChatInputCommandInteraction
             return await interaction.editReply(options)
         }
-        let msg = this.subject as Message
+        const msg = this.subject as Message
         return await msg.edit(options)
     }
     public async fetchReply(message?: string | undefined): Promise<Message<boolean>> {
         if (this.isInteractionInstance) {
-            let interaction = this.subject as ChatInputCommandInteraction
+            const interaction = this.subject as ChatInputCommandInteraction
             return await interaction.fetchReply(message)
         }
-        let msg = this.subject as Message
+        const msg = this.subject as Message
         return await msg.fetch()
     }
     public async followUp(options: string | MessagePayload | InteractionReplyOptions): Promise<Message<boolean>> {
         if (this.isInteractionInstance) {
-            let interaction = this.subject as ChatInputCommandInteraction
+            const interaction = this.subject as ChatInputCommandInteraction
             return await interaction.followUp(options)
         }
-        let msg = this.subject as Message
+        const msg = this.subject as Message
         return await msg.fetch()
     }
     public get guild(): Guild | null {
@@ -170,22 +170,22 @@ export class MessageAdapter implements Omit<ChatInputCommandInteraction, "option
     }
     public inCachedGuild(): this is ChatInputCommandInteraction<"cached"> {
         if (this.isInteractionInstance) {
-            let interaction = this.subject as ChatInputCommandInteraction
+            const interaction = this.subject as ChatInputCommandInteraction
             return interaction.inCachedGuild()
         }
         return false
     }
     public inGuild(): this is ChatInputCommandInteraction<"cached" | "raw"> {
         if (this.isInteractionInstance) {
-            let interaction = this.subject as ChatInputCommandInteraction
+            const interaction = this.subject as ChatInputCommandInteraction
             return interaction.inGuild()
         }
-        let msg = this.subject as Message
+        const msg = this.subject as Message
         return msg.inGuild()
     }
     public inRawGuild(): this is ChatInputCommandInteraction<"raw"> {
         if (this.isInteractionInstance) {
-            let interaction = this.subject as ChatInputCommandInteraction
+            const interaction = this.subject as ChatInputCommandInteraction
             return interaction.inRawGuild()
         }
         return true
@@ -238,24 +238,24 @@ export class MessageAdapter implements Omit<ChatInputCommandInteraction, "option
     public isUserSelectMenu(): this is UserSelectMenuInteraction<CacheType> {
         return false
     }
-    public async reply(options: InteractionReplyOptions & { fetchReply: true; reply: true; }): Promise<Message<boolean>>;
-    public async reply(options: string | InteractionReplyOptions & { fetchReply: true; reply: true; } | MessagePayload & { fetchReply: true; reply: true; }): Promise<InteractionResponse<boolean>>;
+    public async reply(options: InteractionReplyOptions & { fetchReply: true; reply: true }): Promise<Message<boolean>>
+    public async reply(options: string | InteractionReplyOptions & { fetchReply: true; reply: true } | MessagePayload & { fetchReply: true; reply: true }): Promise<InteractionResponse<boolean>>
     public async reply(options: unknown): Promise<Message<boolean> | InteractionResponse<boolean>> {
         if (this.isInteractionInstance) {
-            let interaction = this.subject as ChatInputCommandInteraction
+            const interaction = this.subject as ChatInputCommandInteraction
             return await interaction.reply(options!)
         }
-        let msg = this.subject as Message
+        const msg = this.subject as Message
         if ((options as (typeof options & {reply: boolean})).reply) return await msg.reply(options!)
         return await msg.channel.send(options!)
     }
     public async showModal(modal: APIModalInteractionResponseCallbackData | ModalComponentData | JSONEncodable<APIModalInteractionResponseCallbackData>): Promise<void> {
         if (this.isInteractionInstance) {
-            let interaction = this.subject as ChatInputCommandInteraction
+            const interaction = this.subject as ChatInputCommandInteraction
             return await interaction.showModal(modal)
         }
     }
-    public toJSON(..._props: Record<string, string | boolean>[]): unknown {
+    public toJSON(): unknown {
         return this.subject.toJSON()
     }
     public toString(): string {
@@ -265,8 +265,8 @@ export class MessageAdapter implements Omit<ChatInputCommandInteraction, "option
         return this.subject.valueOf()
     }
     /**
-     * @deprecated
-     */
+	 * @deprecated
+	 */
     public isSelectMenu(): this is StringSelectMenuInteraction<CacheType> {
         return false
     }

@@ -4,7 +4,7 @@
 >
 > 1) ~~Add utilities for .json files~~
 > 2) ~~Add wrapper functions~~
-> 3) Add schema safety (zod)
+> 3) ~~Add schema safety (zod)~~ **[REVISE]**
 > 4) ~~yml file support~~ **[REVISE]**
 > 5) ~~.env file support~~ **[REVISE]**
 >
@@ -18,8 +18,7 @@
 > ## 4. Implement Tests
 >
 > 1) Write the tests
-> 2) Add CI/CD support
-> 3) Add comments to code
+> 2) Add comments to code
 >
 > ## 5. Implement CLI Tools
 >
@@ -30,11 +29,9 @@
 >
 > ## 6. Organise Github Repo
 >
-> 1) README.md file
-> 2) Other markdown files
-> 3) Make documentations
-> 4) Make proper Github profile
-> 5) Add comments to code
+> 1) Make documentations
+> 2) Make proper Github profile
+> 3) Add comments to code
 >
 > ## 7. Discord server
 >
@@ -46,3 +43,32 @@
 > ## 8. Setup donation account
 >
 > ## 9. Start promoting (on infinite loop)
+
+## Side Quests (Any order)
+
+> ## Automation CI/CD
+>
+> ~~1) Add Gulp support~~
+> ~~2) Write Gulp tasks and register then in `npm start`~~
+>
+> ## VSCode Configs
+>
+> `launch.json`
+> `tasks.json`
+>
+> ## Development
+>
+> Optimize `.editorconfig`
+> Optimize `.gitignore`
+> Implement `README.md`
+> Implement `LICENSE`
+> Implement `ROADMAP.md`
+> Implement `CONTRIBUTING.md`
+> Implement `CHANGELOG.md`
+> Implement `ARCHITECTURE.md`
+> Implement `CONTRIBUTORS.md`
+> Implement `CODE_OF_CONDUCT.md`
+>
+> ## Features
+>
+> Add native notification support using `node-notifier`
