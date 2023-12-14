@@ -1,7 +1,7 @@
 import { Precondition } from "@sapphire/framework";
 import { ContextMenuCommandInteraction } from "discord.js";
-import { dotenv } from "../utils/dotenv";
 import { SuggestionUtils } from "../utils/suggestionUtils";
+import { ConfigUtils } from "../utils/json/configUtils";
 
 export class SuggestionEmbedPrecondition extends Precondition {
     public override async contextMenuRun(
@@ -12,7 +12,7 @@ export class SuggestionEmbedPrecondition extends Precondition {
     private checkInteraction(interaction: ContextMenuCommandInteraction) {
         if (
             !interaction.isMessageContextMenuCommand() ||
-            interaction.channelId != dotenv("SUGGESTIONS_CHANNEL_ID") ||
+            interaction.channelId != ConfigUtils.findOneMentionableByFlags("channel","SUGGESTIONS_CHANNEL").id ||
             interaction.targetMessage.author.id != interaction.client.user.id
         )
             return this.error({ message: "This message is not a suggestion" });

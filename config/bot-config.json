@@ -1,6 +1,6 @@
 {
     "root": "./",
-    "prefix": "!",
+    "prefix": ">",
     "dotenvOverride": {
         "path": ".env.dev"
     }

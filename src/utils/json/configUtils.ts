@@ -1,7 +1,8 @@
 import { JSONConfig } from "./parseConfig";
 import path from "node:path";
 import { JSONConfigDefaults } from "../../data/jsonConfigDefaults";
-import { ConfigFile } from "../../types/config/bot-config";
+import { ConfigFile } from "../../schemas/config/bot-config";
+import MentionablesConfig from "../../schemas/config/mentionables";
 export namespace ConfigUtils {
     export function getDotenvPath() {
         const config = JSONConfig.parseConfigs();
@@ -10,23 +11,66 @@ export namespace ConfigUtils {
         return path.join(JSONConfig.ROOT_PATH, root, filename!);
     }
     interface PrefixInfo {
-        prefix: string,
-        slashEnabled: boolean
+        prefix: string;
+        slashEnabled: boolean;
     }
     export function getPrefixInfo(): PrefixInfo {
-        const config = JSONConfig.parseConfigs();
-        const { prefix } = config.bot;
-        return typeof prefix === "string" ? {
-            prefix,
-            slashEnabled: true
-        } : {
-            prefix: prefix.nonSlash,
-            slashEnabled: prefix.slashEnabled ?? true
-        }
+        const configs = JSONConfig.parseConfigs();
+        const { prefix } = configs.bot;
+        return typeof prefix === "string"
+            ? {
+                prefix,
+                slashEnabled: true,
+            }
+            : {
+                prefix: prefix.nonSlash,
+                slashEnabled: prefix.slashEnabled ?? true,
+            };
+    }
+    type MentionableType = "channel" | "role" | "all"
+    type ChannelMentionableFlag =
+        | "SUPPORT_CATEGORY"
+        | "SUPPORT_LOGS"
+        | "WFS_CHANNEL"
+        | "SUGGESTIONS_CHANNEL"
+    type RoleMentionableFlag =
+        | "STAFF_ROLE"
+        | "JOB_MANAGER_ROLE"
+        | "DONATE_MANAGER_ROLE"
+    type GlobalMentionableFlags = never
+    type MentionableFlagAll = ChannelMentionableFlag | RoleMentionableFlag
+    export type MentionableFlag<T extends MentionableType = "all"> =
+        | T extends "channel"
+        ? ChannelMentionableFlag
+        : T extends "role"
+        ? RoleMentionableFlag
+        : T extends "all"
+        ? MentionableFlagAll
+        : string
+        | GlobalMentionableFlags
+    export function includesFlag(flagList: string[] | Record<string, boolean>, desiredFlag: string): boolean {
+        if (Array.isArray(flagList)) return flagList.includes(desiredFlag)
+        else return flagList[desiredFlag]
+    }
+    export function filterMentionablesByFlags(mentionableType: MentionableType, ...flags: MentionableFlag<typeof mentionableType>[]): MentionablesConfig["items"] {
+        const configs = JSONConfig.parseConfigs()
+        const { items } = configs.mentionables
+        if (!items) return []
+        flags = Array.from(new Set(flags))
+        const itemsFilteredByType = mentionableType == "all"
+            ? items
+            : items.filter(item => item.type == mentionableType)
+        return itemsFilteredByType.filter(item => {
+            if (!item.flags) return false
+            else return flags.reduce((prev, val) => (prev && includesFlag(item.flags! ,val)), true)
+        })
+    }
+    export function findOneMentionableByFlags(mentionableType: MentionableType, ...flags: MentionableFlag<typeof mentionableType>[]): NonNullable<MentionablesConfig["items"]>[number] {
+        return filterMentionablesByFlags(mentionableType, ...flags)![0]
     }
     export function parseConfigFileInfo(configObj: ConfigFile): ConfigFile {
         let { fileType } = configObj;
-        const { path, type } = configObj
+        const { path, type } = configObj;
         const validFileExtensions = ["env", "yml", "json"] as const;
         if (!fileType)
             fileType = path

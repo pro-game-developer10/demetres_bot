@@ -1,9 +1,15 @@
 import fs from "node:fs";
 import path from "node:path";
-import BotConfig, { botConfigSchema } from "../../types/config/bot-config";
-import MentionablesConfig, { mentionablesConfigSchema } from "../../types/config/mentionables";
-import OverridesConfig, { overridesConfigSchema } from "../../types/config/overrides";
-import PluginsConfig, { pluginsConfigSchema } from "../../types/config/plugins";
+import BotConfig, { botConfigSchema } from "../../schemas/config/bot-config";
+import MentionablesConfig, {
+    mentionablesConfigSchema,
+} from "../../schemas/config/mentionables";
+import OverridesConfig, {
+    overridesConfigSchema,
+} from "../../schemas/config/overrides";
+import PluginsConfig, {
+    pluginsConfigSchema,
+} from "../../schemas/config/plugins";
 import { JSONConfigDefaults } from "../../data/jsonConfigDefaults";
 import { ConfigUtils } from "./configUtils";
 export namespace JSONConfig {
@@ -21,15 +27,15 @@ export namespace JSONConfig {
     }
 
     export type ConfigJSON<C extends ConfigType> =
-        | C extends ConfigType.BOT_CONFIG
-        ? BotConfig
-        : C extends ConfigType.MENTIONABLES
-        ? MentionablesConfig
-        : C extends ConfigType.OVERRIDES
-        ? OverridesConfig
-        : C extends ConfigType.PLUGINS
-        ? PluginsConfig
-        : never;
+        C extends ConfigType.BOT_CONFIG
+            ? BotConfig
+            : C extends ConfigType.MENTIONABLES
+            ? MentionablesConfig
+            : C extends ConfigType.OVERRIDES
+            ? OverridesConfig
+            : C extends ConfigType.PLUGINS
+            ? PluginsConfig
+            : never;
 
     export interface ConfigsAll extends ConfigsAllLimited {
         [configType: string]: Partial<ConfigJSON<ConfigType>>;
@@ -62,7 +68,7 @@ export namespace JSONConfig {
                 (path) => path.type === "bot-config"
             )[0].path ?? fallbacks.botPath;
         const mentionablesPath =
-            contents.configPaths?.filter((path) => path.type === "channels")[0]
+            contents.configPaths?.filter((path) => path.type === "mentionables")[0]
                 .path ?? fallbacks.mentionablesPath;
         const pluginsPath =
             contents.configPaths?.filter((path) => path.type === "plugins")[0]
@@ -82,7 +88,7 @@ export namespace JSONConfig {
                 fs.readFileSync(paths.bot).toString()
             ) as ConfigJSON<ConfigType.BOT_CONFIG>,
             mentionables: JSON.parse(
-                fs.readFileSync(paths.channels).toString()
+                fs.readFileSync(paths.mentionables).toString()
             ) as ConfigJSON<ConfigType.MENTIONABLES>,
             overrides: JSON.parse(
                 fs.readFileSync(paths.overrides).toString()

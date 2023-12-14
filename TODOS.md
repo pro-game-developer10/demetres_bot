@@ -4,9 +4,9 @@
 >
 > 1) ~~Add utilities for .json files~~
 > 2) ~~Add wrapper functions~~
-> 3) ~~Add schema safety (zod)~~ **[REVISE]**
+> 3) ~~Add schema safety (zod)~~
 > 4) ~~yml file support~~ **[REVISE]**
-> 5) ~~.env file support~~ **[REVISE]**
+> 5) ~~.env file support~~
 >
 > ## 2. Add support for plugins
 >

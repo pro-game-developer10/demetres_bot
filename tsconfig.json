@@ -8,5 +8,5 @@
         "skipLibCheck": true,
     },
     "include": ["./src", ".eslintrc.js"],
-    "exclude": ["**/**/node_modules/**/**"],
+    "exclude": ["**/**/node_modules/**/**", "./src/benchmark", "./src/__tests__"],
 }

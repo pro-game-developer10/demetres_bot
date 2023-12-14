@@ -10,6 +10,5 @@ export function logoUrl(subject?: Client | Guild): string {
     const subjectAsGuild = isClient(subject)
         ? subject.guilds.cache.get(dotenv("DEFAULT_GUILD_ID"))
         : subject;
-    const logoUrl = subjectAsGuild?.iconURL() ?? dotenv("FALLBACK_LOGO_URL");
-    return logoUrl;
+    return subjectAsGuild?.iconURL() ?? dotenv("FALLBACK_LOGO_URL");
 }

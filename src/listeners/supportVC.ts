@@ -1,7 +1,7 @@
 import { Listener } from "@sapphire/framework";
 import { ChannelType, VoiceState } from "discord.js";
-import { dotenv } from "../utils/dotenv";
 import { EmbedTemplate, TicketPermissionsInfo } from "../utils/embedTemplates";
+import { ConfigUtils } from "../utils/json/configUtils";
 
 export class SupportVCListener extends Listener {
     public constructor(context: Listener.Context, options: Listener.Options) {
@@ -13,16 +13,17 @@ export class SupportVCListener extends Listener {
         });
     }
     public async run(_oldState: VoiceState, newState: VoiceState) {
-        if (!(newState.channelId! == dotenv("WFS_CHANNEL_ID"))) return;
+        console.log(ConfigUtils.findOneMentionableByFlags("channel", "WFS_CHANNEL"))
+        if (!(newState.channelId! == ConfigUtils.findOneMentionableByFlags("channel", "WFS_CHANNEL").id)) return;
         const supportChannelCount = newState.guild.channels.cache.filter(
             (channel) =>
                 channel.isVoiceBased() &&
-                channel.parentId == dotenv("SUPPORT_CATEGORY_ID")
+                channel.parentId == ConfigUtils.findOneMentionableByFlags("channel", "SUPPORT_CATEGORY").id
         ).size;
         const supportChannel = await newState.guild?.channels.create({
             type: ChannelType.GuildVoice,
             name: `📞〢Support #${supportChannelCount}`,
-            parent: dotenv("SUPPORT_CATEGORY_ID"),
+            parent: ConfigUtils.findOneMentionableByFlags("channel","SUPPORT_CATEGORY").id,
             reason: `WFS Voice Channel που φτιάχτηκε από τον user ${newState.member?.user.username}`,
             permissionOverwrites: TicketPermissionsInfo.WFSVCChannelPermissions(
                 // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
@@ -35,11 +36,11 @@ export class SupportVCListener extends Listener {
             `WFS Voice Channel που φτιάχτηκε από τον user ${newState.member?.user.username}`
         );
         await newState.guild?.channels
-            .fetch(dotenv("SUPPORT_LOGS_CHANNEL_ID"))
+            .fetch(ConfigUtils.findOneMentionableByFlags("channel","SUPPORT_LOGS").id)
             ?.then((channel) => {
                 if (channel?.isTextBased())
                     channel.send({
-                        content: `<@&${dotenv("STAFF_ROLE_ID")}>`,
+                        content: `<@&${ConfigUtils.findOneMentionableByFlags("channel","STAFF_ROLE").id}>`,
                         embeds: [
                             EmbedTemplate.UserSupportNeeded(
                                 // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain

@@ -1,18 +1,17 @@
 import {
     InteractionHandler,
     InteractionHandlerTypes,
-    PieceContext,
 } from "@sapphire/framework";
 import {
     ChannelType,
     OverwriteResolvable,
     type StringSelectMenuInteraction,
 } from "discord.js";
-import { dotenv } from "../utils/dotenv";
+import { ConfigUtils } from "../utils/json/configUtils";
 import { EmbedTemplate, TicketPermissionsInfo } from "../utils/embedTemplates";
 
 export class TicketSelectionHandler extends InteractionHandler {
-    public constructor(ctx: PieceContext, options: InteractionHandler.Options) {
+    public constructor(ctx: InteractionHandler.LoaderContext, options: InteractionHandler.Options) {
         super(ctx, {
             ...options,
             interactionHandlerType: InteractionHandlerTypes.SelectMenu,
@@ -36,7 +35,7 @@ export class TicketSelectionHandler extends InteractionHandler {
             ticketInfo.name = `🎟️〢${interaction.user.username}-support`;
             ticketInfo.mentions.push(
                 `<@${interaction.user.id}>`,
-                `<@&${dotenv("STAFF_ROLE_ID")}>`
+                `<@&${ConfigUtils.findOneMentionableByFlags("role","STAFF_ROLE").id}>`
             );
             ticketInfo.permissions =
                     TicketPermissionsInfo.SupportTicketPermissions(
@@ -48,7 +47,7 @@ export class TicketSelectionHandler extends InteractionHandler {
             ticketInfo.name = `💼〢${interaction.user.username}-job`;
             ticketInfo.mentions.push(
                 `<@${interaction.user.id}>`,
-                `<@&${dotenv("JOB_MANAGER_ROLE_ID")}>`
+                `<@&${ConfigUtils.findOneMentionableByFlags("role","JOB_MANAGER_ROLE").id}>`
             );
             ticketInfo.permissions =
                     TicketPermissionsInfo.JobTicketPermissions(
@@ -59,7 +58,7 @@ export class TicketSelectionHandler extends InteractionHandler {
         case "donate":
             ticketInfo.mentions.push(
                 `<@${interaction.user.id}>`,
-                `<@&${dotenv("DONATE_MANAGER_ROLE_ID")}>`
+                `<@&${ConfigUtils.findOneMentionableByFlags("role","DONATE_MANAGER_ROLE").id}>`
             );
             ticketInfo.name = `💸〢${interaction.user.username}-donate`;
             ticketInfo.permissions =
@@ -71,7 +70,7 @@ export class TicketSelectionHandler extends InteractionHandler {
         default:
             ticketInfo.mentions.push(
                 `<@${interaction.user.id}>`,
-                `<@&${dotenv("STAFF_ROLE_ID")}>`
+                `<@&${ConfigUtils.findOneMentionableByFlags("role","STAFF_ROLE").id}>`
             );
             ticketInfo.name = `🎫〢${interaction.user.username}-ticket`;
             ticketInfo.permissions =
@@ -81,7 +80,7 @@ export class TicketSelectionHandler extends InteractionHandler {
                     );
             break;
         }
-        const categoryID = dotenv("SUPPORT_CATEGORY_ID");
+        const categoryID = ConfigUtils.findOneMentionableByFlags("channel","SUPPORT_CATEGORY").id;
         const ticketChannel = await interaction.guild?.channels.create({
             type: ChannelType.GuildText,
             name: ticketInfo.name,

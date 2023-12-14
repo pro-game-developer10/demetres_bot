@@ -1,7 +1,7 @@
-import BotConfig from "../types/config/bot-config";
-import MentionablesConfig from "../types/config/mentionables";
-import OverridesConfig from "../types/config/overrides";
-import PluginsConfig from "../types/config/plugins";
+import BotConfig from "../schemas/config/bot-config";
+import MentionablesConfig from "../schemas/config/mentionables";
+import OverridesConfig from "../schemas/config/overrides";
+import PluginsConfig from "../schemas/config/plugins";
 
 export namespace JSONConfigDefaults {
     export const BOT: Required<BotConfig> = {

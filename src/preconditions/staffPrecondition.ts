@@ -5,7 +5,7 @@ import {
     GuildMember,
     Message,
 } from "discord.js";
-import { dotenv } from "../utils/dotenv";
+import { ConfigUtils } from "../utils/json/configUtils";
 
 export class StaffPrecondition extends Precondition {
     public override async messageRun(message: Message) {
@@ -29,9 +29,9 @@ export class StaffPrecondition extends Precondition {
     }
     public static checkMember(member: GuildMember) {
         return (
-            member.roles.cache.has(dotenv("DONATE_MANAGER_ROLE_ID")) ||
-            member.roles.cache.has(dotenv("JOB_MANAGER_ROLE_ID")) ||
-            member.roles.cache.has(dotenv("STAFF_ROLE_ID"))
+            member.roles.cache.has(ConfigUtils.findOneMentionableByFlags("role", "DONATE_MANAGER_ROLE").id) ||
+            member.roles.cache.has(ConfigUtils.findOneMentionableByFlags("role", "JOB_MANAGER_ROLE").id) ||
+            member.roles.cache.has(ConfigUtils.findOneMentionableByFlags("role", "STAFF_ROLE").id)
         );
     }
 }

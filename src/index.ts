@@ -3,10 +3,11 @@ import { GatewayIntentBits } from "discord.js";
 import { dotenv, dotenvInit } from "./utils/dotenv";
 import { ConfigUtils } from "./utils/json/configUtils";
 
-process.env = dotenvInit();
+process.env = dotenvInit()
 
 const { prefix } = ConfigUtils.getPrefixInfo()
 
+// eslint-disable-next-line
 const client = new SapphireClient({
     intents: [
         GatewayIntentBits.MessageContent,
@@ -17,4 +18,4 @@ const client = new SapphireClient({
     loadMessageCommandListeners: true,
     defaultPrefix: prefix,
 });
-client.login(dotenv("TOKEN") satisfies string);
+client.login(dotenv("TOKEN") satisfies string)

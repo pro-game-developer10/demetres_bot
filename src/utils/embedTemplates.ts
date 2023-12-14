@@ -10,10 +10,10 @@ import {
     Guild,
     GuildMember,
 } from "discord.js";
-import { dotenv } from "./dotenv";
 import { SuggestionUtils } from "./suggestionUtils";
 import { logoUrl } from "./logoUrl";
 import { EmbedVerificationUtils } from "./embedVerification";
+import { ConfigUtils } from "./json/configUtils";
 
 export namespace TicketPermissionsInfo {
     export const SupportTicketPermissions = (
@@ -32,7 +32,7 @@ export namespace TicketPermissionsInfo {
         },
         {
             type: OverwriteType.Role,
-            id: dotenv("STAFF_ROLE_ID"),
+            id: ConfigUtils.findOneMentionableByFlags("role","STAFF_ROLE").id,
             allow: ["ViewChannel"],
         },
     ];
@@ -52,7 +52,7 @@ export namespace TicketPermissionsInfo {
         },
         {
             type: OverwriteType.Role,
-            id: dotenv("DONATE_MANAGER_ROLE_ID"),
+            id: ConfigUtils.findOneMentionableByFlags("role","DONATE_MANAGER_ROLE").id,
             allow: ["ViewChannel"],
         },
     ];
@@ -72,7 +72,7 @@ export namespace TicketPermissionsInfo {
         },
         {
             type: OverwriteType.Role,
-            id: dotenv("JOB_MANAGER_ROLE_ID"),
+            id: ConfigUtils.findOneMentionableByFlags("role","JOB_MANAGER_ROLE").id,
             allow: ["ViewChannel"],
         },
     ];
@@ -92,17 +92,17 @@ export namespace TicketPermissionsInfo {
         },
         {
             type: OverwriteType.Role,
-            id: dotenv("STAFF_ROLE_ID"),
+            id: ConfigUtils.findOneMentionableByFlags("role","STAFF_ROLE").id,
             deny: ["ViewChannel"],
         },
         {
             type: OverwriteType.Role,
-            id: dotenv("JOB_MANAGER_ROLE_ID"),
+            id: ConfigUtils.findOneMentionableByFlags("role","JOB_MANAGER_ROLE").id,
             deny: ["ViewChannel"],
         },
         {
             type: OverwriteType.Role,
-            id: dotenv("DONATE_MANAGER_ROLE_ID"),
+            id: ConfigUtils.findOneMentionableByFlags("role","DONATE_MANAGER_ROLE").id,
             deny: ["ViewChannel"],
         },
     ];
@@ -122,7 +122,7 @@ export namespace TicketPermissionsInfo {
         },
         {
             type: OverwriteType.Role,
-            id: dotenv("STAFF_ROLE_ID"),
+            id: ConfigUtils.findOneMentionableByFlags("role","STAFF_ROLE").id,
             allow: [
                 "ViewChannel",
                 "MuteMembers",
@@ -133,7 +133,7 @@ export namespace TicketPermissionsInfo {
         },
         {
             type: OverwriteType.Role,
-            id: dotenv("JOB_MANAGER_ROLE_ID"),
+            id: ConfigUtils.findOneMentionableByFlags("role","JOB_MANAGER_ROLE").id,
             allow: [
                 "ViewChannel",
                 "MuteMembers",
@@ -144,7 +144,7 @@ export namespace TicketPermissionsInfo {
         },
         {
             type: OverwriteType.Role,
-            id: dotenv("DONATE_MANAGER_ROLE_ID"),
+            id: ConfigUtils.findOneMentionableByFlags("role","DONATE_MANAGER_ROLE").id,
             allow: [
                 "ViewChannel",
                 "MuteMembers",

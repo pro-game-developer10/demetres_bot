@@ -1,14 +1,13 @@
 import {
     InteractionHandler,
     InteractionHandlerTypes,
-    PieceContext,
 } from "@sapphire/framework";
 import { ButtonInteraction, GuildChannel, GuildMember } from "discord.js";
 import { TicketPermissionsInfo } from "../utils/embedTemplates";
 import { StaffPrecondition } from "../preconditions/staffPrecondition";
 
 export class TicketCloseHandler extends InteractionHandler {
-    public constructor(ctx: PieceContext, options: InteractionHandler.Options) {
+    public constructor(ctx: InteractionHandler.LoaderContext, options: InteractionHandler.Options) {
         super(ctx, {
             ...options,
             interactionHandlerType: InteractionHandlerTypes.Button,

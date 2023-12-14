@@ -7,14 +7,9 @@
             "path": "./bot-config.json"
         },
         {
-            "type": "channels",
+            "type": "mentionables",
             "fileType": "json",
-            "path": "./channels.json"
-        },
-        {
-            "type": "roles",
-            "fileType": "json",
-            "path": "./roles.json"
+            "path": "./mentionables.json"
         },
         {
             "type": "plugins",
