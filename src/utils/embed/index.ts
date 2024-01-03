@@ -1,2 +1,2 @@
-export * from "./embedTemplates";
-export * from "./embedVerification";
+export * from './embedTemplates';
+export * from './embedVerification';
