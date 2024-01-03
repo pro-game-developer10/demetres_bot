@@ -1,6 +1,6 @@
 import { Command } from "@sapphire/framework";
 import { GuildChannel, Message } from "discord.js";
-import { TicketPermissionsInfo } from "../utils/embedTemplates";
+import { TicketPermissionsInfo } from "../utils/embed/embedTemplates";
 
 export class ClaimTicketCommand extends Command {
     public constructor(context: Command.Context, options: Command.Options) {

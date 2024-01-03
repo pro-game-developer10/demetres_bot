@@ -1,0 +1,54 @@
+{
+    "enabled": true,
+    "emojis": [
+        {
+            "type": "icon-ticket-support",
+            "unicodeLiteral": null,
+            "name": "support",
+            "id": "1163175087562829876",
+            "animated": false
+        },
+        {
+            "type": "icon-ticket-job",
+            "unicodeLiteral": null,
+            "name": "info",
+            "id": "1163175068361293905",
+            "animated": false
+        },
+        {
+            "type": "icon-ticket-donate",
+            "unicodeLiteral": null,
+            "name": "icondollar",
+            "id": "1163175036337803356",
+            "animated": false
+        },
+        {
+            "type": "icon-support",
+            "unicodeLiteral": null,
+            "name": "support",
+            "id": "1163175087562829876",
+            "animated": false
+        },
+        {
+            "type": "icon-info",
+            "unicodeLiteral": null,
+            "name": "info",
+            "id": "1163175068361293905",
+            "animated": false
+        },
+        {
+            "type": "icon-ticket-close",
+            "unicodeLiteral": null,
+            "name": "iconchat",
+            "id": "1156587045876142122",
+            "animated": false
+        },
+        {
+            "type": "icon-ticket-claim",
+            "unicodeLiteral": null,
+            "name": "info",
+            "id": "1163175068361293905",
+            "animated": false
+        }
+    ]
+}

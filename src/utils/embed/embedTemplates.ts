@@ -10,12 +10,21 @@ import {
     Guild,
     GuildMember,
 } from "discord.js";
-import { SuggestionUtils } from "./suggestionUtils";
-import { logoUrl } from "./logoUrl";
+import { SuggestionUtils } from "../suggestionUtils";
+import { logoUrl } from "../logoUrl";
 import { EmbedVerificationUtils } from "./embedVerification";
-import { ConfigUtils } from "./json/configUtils";
+import { ConfigUtils } from "../json/configUtils";
 
+/**
+ * Channel permissions defined for each role type
+ */
 export namespace TicketPermissionsInfo {
+    /**
+     * Represents the permissions of each role that has access to a SUPPORT ticket
+     * @constructor
+     * @param civilianID - ID of the civillian/member
+     * @param guild - guild object in which the ticket channel is going to be created
+     */
     export const SupportTicketPermissions = (
         civilianID: string,
         guild: Guild
@@ -32,10 +41,16 @@ export namespace TicketPermissionsInfo {
         },
         {
             type: OverwriteType.Role,
-            id: ConfigUtils.findOneMentionableByFlags("role","STAFF_ROLE").id,
+            id: ConfigUtils.findOneMentionableByFlags("role", "STAFF_ROLE").id,
             allow: ["ViewChannel"],
         },
     ];
+    /**
+     * Represents the permissions of each role that has access to a DONATION ticket
+     * @constructor
+     * @param civilianID - ID of the civillian/member
+     * @param guild - guild object in which the ticket channel is going to be created
+     */
     export const DonateTicketPermissions = (
         civilianID: string,
         guild: Guild
@@ -52,10 +67,19 @@ export namespace TicketPermissionsInfo {
         },
         {
             type: OverwriteType.Role,
-            id: ConfigUtils.findOneMentionableByFlags("role","DONATE_MANAGER_ROLE").id,
+            id: ConfigUtils.findOneMentionableByFlags(
+                "role",
+                "DONATE_MANAGER_ROLE"
+            ).id,
             allow: ["ViewChannel"],
         },
     ];
+    /**
+     * Represents the permissions of each role that has access to a JOB RECRUITMENT ticket
+     * @constructor
+     * @param civilianID - ID of the civillian/member
+     * @param guild - guild object in which the ticket channel is going to be created
+     */
     export const JobTicketPermissions = (
         civilianID: string,
         guild: Guild
@@ -72,10 +96,19 @@ export namespace TicketPermissionsInfo {
         },
         {
             type: OverwriteType.Role,
-            id: ConfigUtils.findOneMentionableByFlags("role","JOB_MANAGER_ROLE").id,
+            id: ConfigUtils.findOneMentionableByFlags(
+                "role",
+                "JOB_MANAGER_ROLE"
+            ).id,
             allow: ["ViewChannel"],
         },
     ];
+    /**
+     * Represents the permissions of each role that has access to a ticket which was claimed by a staff
+     * @constructor
+     * @param staffId - ID of the staff member which claimed the ticket
+     * @param guild - guild object in which the ticket channel is going to be created
+     */
     export const ClaimedTicketPermissions = (
         staffId: string,
         guild: Guild
@@ -92,20 +125,32 @@ export namespace TicketPermissionsInfo {
         },
         {
             type: OverwriteType.Role,
-            id: ConfigUtils.findOneMentionableByFlags("role","STAFF_ROLE").id,
+            id: ConfigUtils.findOneMentionableByFlags("role", "STAFF_ROLE").id,
             deny: ["ViewChannel"],
         },
         {
             type: OverwriteType.Role,
-            id: ConfigUtils.findOneMentionableByFlags("role","JOB_MANAGER_ROLE").id,
+            id: ConfigUtils.findOneMentionableByFlags(
+                "role",
+                "JOB_MANAGER_ROLE"
+            ).id,
             deny: ["ViewChannel"],
         },
         {
             type: OverwriteType.Role,
-            id: ConfigUtils.findOneMentionableByFlags("role","DONATE_MANAGER_ROLE").id,
+            id: ConfigUtils.findOneMentionableByFlags(
+                "role",
+                "DONATE_MANAGER_ROLE"
+            ).id,
             deny: ["ViewChannel"],
         },
     ];
+    /**
+     * Represents the permissions of each role that has access to a WFS VC support channel
+     * @constructor
+     * @param civilianID - ID of the civillian/member
+     * @param guild - guild object in which the support channel is going to be created
+     */
     export const WFSVCChannelPermissions = (
         civilianID: string,
         guild: Guild
@@ -122,7 +167,7 @@ export namespace TicketPermissionsInfo {
         },
         {
             type: OverwriteType.Role,
-            id: ConfigUtils.findOneMentionableByFlags("role","STAFF_ROLE").id,
+            id: ConfigUtils.findOneMentionableByFlags("role", "STAFF_ROLE").id,
             allow: [
                 "ViewChannel",
                 "MuteMembers",
@@ -133,7 +178,10 @@ export namespace TicketPermissionsInfo {
         },
         {
             type: OverwriteType.Role,
-            id: ConfigUtils.findOneMentionableByFlags("role","JOB_MANAGER_ROLE").id,
+            id: ConfigUtils.findOneMentionableByFlags(
+                "role",
+                "JOB_MANAGER_ROLE"
+            ).id,
             allow: [
                 "ViewChannel",
                 "MuteMembers",
@@ -144,7 +192,10 @@ export namespace TicketPermissionsInfo {
         },
         {
             type: OverwriteType.Role,
-            id: ConfigUtils.findOneMentionableByFlags("role","DONATE_MANAGER_ROLE").id,
+            id: ConfigUtils.findOneMentionableByFlags(
+                "role",
+                "DONATE_MANAGER_ROLE"
+            ).id,
             allow: [
                 "ViewChannel",
                 "MuteMembers",
@@ -156,20 +207,23 @@ export namespace TicketPermissionsInfo {
     ];
 }
 
+/**
+ * Options for the Ticket Select Menu
+ */
 const TicketSelectMenuOptions = [
     {
-        emoji: "1163175087562829876",
+        emoji: ConfigUtils.getEmojiByType("icon-ticket-support") ?? /* Ticket Emoji */ "\uD83C\uDFAB",
         label: "Support",
         description: "Χρησιμοποίησε αυτήν την επιλογή έαν θες βοήθεια",
     },
     {
-        emoji: "1163175068361293905",
+        emoji: ConfigUtils.getEmojiByType("icon-ticket-job") ?? /* Briefcase emoji */ "\uD83D\uDCBC",
         label: "Job",
         description:
             "Χρησιμοποίησε αυτήν την επιλογή έαν θες να πάρεις κάποιο (in-game) job",
     },
     {
-        emoji: "1163175036337803356",
+        emoji: ConfigUtils.getEmojiByType("icon-ticket-donate") ?? /* Money Emoji */ "\uD83D\uDCB5",
         label: "Donate",
         description:
             "Χρησιμοποίησε αυτήν την επιλογή έαν θες να κάνεις donate στον server",
@@ -182,7 +236,14 @@ const TicketSelectMenuOptions = [
         .setValue(label.toLowerCase())
 );
 
+/**
+ * Predefined templates for reusable templates
+ */
 export namespace EmbedTemplate {
+    /**
+     * Represents an invalid template
+     * @param id - ID of the template
+     */
     export const InvalidTemplateError = (id: string) =>
         new EmbedBuilder()
             .setColor(0xff0000)
@@ -192,6 +253,9 @@ export namespace EmbedTemplate {
             })
             .setTitle("Error")
             .setDescription(`Couldn't find template with id of ${id}`);
+    /**
+     * Represents the Ticket Selection Embed
+     */
     export const TicketSelect = new EmbedBuilder()
         .setColor(0x2a9bf2)
         .setAuthor({
@@ -200,15 +264,23 @@ export namespace EmbedTemplate {
         })
         .setTitle("Support Ticket")
         .setDescription(
-            "<:support:1163175087562829876> Επιλέξτε μια κατηγορία με την οποία θα μπορούσαμε να σας βοηθήσουμε και θα σας εξυπηρετήσουμε όσον τον δυνατόν γρηγορότερα!\n" +
-                "<:info:1163175068361293905> Επίσης μην κάνετε άσκοπα/troll tickets"
+            `${ConfigUtils.getEmojiByType("icon-support", true) ?? ":ticket:"} Επιλέξτε μια κατηγορία με την οποία θα μπορούσαμε να σας βοηθήσουμε και θα σας εξυπηρετήσουμε όσον τον δυνατόν γρηγορότερα!\n` +
+                `${ConfigUtils.getEmojiByType("icon-info", true) ?? ":information_source:"} Επίσης μην κάνετε άσκοπα/troll tickets`
         );
+    /**
+     * Represents the actual selection box for the Ticket Selection Embed
+     */
     export const TicketSelectMenu = new ActionRowBuilder().addComponents([
         new StringSelectMenuBuilder()
             .addOptions(TicketSelectMenuOptions)
             .setPlaceholder("Επιλέξτε μια κατηγορία!")
             .setCustomId("ticket_type"),
     ]);
+    /**
+     * Represents an embed that gets sent once a ticket is created
+     * @constructor
+     * @param userId - ID of the user who created the ticket
+     */
     export const TicketCreationEmbedTemplate = (userId: string) =>
         new EmbedBuilder()
             .setColor(0x2a9bf2)
@@ -218,7 +290,7 @@ export namespace EmbedTemplate {
             })
             .setTitle("Ticket φτιάχτηκε επιτυχώς!")
             .setDescription(
-                "<:support:1163175087562829876> Υπομονή! Θα σας εξυπηρετήσουμε σύντομα!"
+                `${ConfigUtils.getEmojiByType("icon-support", true) ?? ":ticket:"} Υπομονή! Θα σας εξυπηρετήσουμε σύντομα!`
             )
             .addFields([
                 {
@@ -226,20 +298,26 @@ export namespace EmbedTemplate {
                     value: `<@${userId}>`,
                 },
             ]);
+    /**
+     * Represents the control buttons for managing a ticket
+     */
     export const TicketControls =
         new ActionRowBuilder<ButtonBuilder>().addComponents([
             new ButtonBuilder()
                 .setCustomId("close_ticket")
                 .setStyle(ButtonStyle.Danger)
                 .setLabel("Close Ticket")
-                .setEmoji("1156587045876142122"),
+                .setEmoji(ConfigUtils.getEmojiByType("icon-ticket-close") ?? /* File Cabinet Emoji */ "\uD83D\uDDC4\uFE0F"),
             new ButtonBuilder()
                 .setCustomId("claim_ticket")
                 .setStyle(ButtonStyle.Primary)
                 .setLabel("Claim Ticket")
-                .setEmoji("1163175068361293905")
+                .setEmoji(ConfigUtils.getEmojiByType("icon-ticket-claim") ?? /* Triangular Flag Emoji */ "\uD83D\uDEA9")
                 .setDisabled(true),
         ]);
+    /**
+     * Represents an error when a channel is not a ticket channel
+     */
     export const NotATicketErrorEmbed = new EmbedBuilder()
         .setColor(0xff0000)
         .setAuthor({
@@ -250,6 +328,12 @@ export namespace EmbedTemplate {
         .setDescription(
             "Για λόγους ασφαλείας, το command είναι σχεδιασμένο να λειτουργεί μόνο σε tickets"
         );
+    /**
+     * Represents an embed notifying the server staff that a user needs support
+     * @constructor
+     * @param userId - ID of the user
+     * @param channelId - ID of the ticket channel
+     */
     export const UserSupportNeeded = (userId: string, channelId: string) =>
         new EmbedBuilder()
             .setColor(0x2a9bf2)
@@ -259,7 +343,7 @@ export namespace EmbedTemplate {
             })
             .setTitle("Ένας χρήστης χρειάζεται βοήθεια!")
             .setDescription(
-                "<:info:1163175068361293905> Ένας χρήστης χρειάζεται βοήθεια! Παρακαλώ πηγαίνετε να τον εξυπηρετήσετε!"
+                `${ConfigUtils.getEmojiByType("icon-info", true) ?? ":information_source:"} Ένας χρήστης χρειάζεται βοήθεια! Παρακαλώ πηγαίνετε να τον εξυπηρετήσετε!`
             )
             .addFields([
                 {
@@ -273,6 +357,13 @@ export namespace EmbedTemplate {
                     inline: true,
                 },
             ]);
+    /**
+     * Represents a user suggestion embed
+     * @constructor
+     * @param member - Member who created the suggestion
+     * @param suggestion - The suggestion's description
+     * @param suggestionStatus - The status of the suggestion
+     */
     export const UserSuggestion = (
         member: GuildMember,
         suggestion: string,
@@ -308,15 +399,44 @@ export namespace EmbedTemplate {
                 iconURL: logoUrl(),
                 text: `Astral Roleplay ||${member.user.id}||`,
             });
+    /**
+     * Options for generating an embed using the /embed command
+     */
     export interface EmbedGenOptions {
+        /**
+         * The profile entity that represents the author of the embed
+         */
         profile: EmbedVerificationUtils.EmbedAuthorProfile;
+        /**
+         * The member who made the embed
+         */
         member: GuildMember;
+        /**
+         * The color used by the embed
+         */
         colorType: EmbedVerificationUtils.EmbedColorType;
+        /**
+         * Optional embed title
+         */
         title?: string;
+        /**
+         * Optional embed description
+         */
         description?: string;
+        /**
+         * Optional embed footer
+         */
         footer?: string;
+        /**
+         * Whether or not the footer text is included with an icon
+         */
         footerIcon?: boolean;
     }
+    /**
+     * Represents a user-generated embed using the /embed command
+     * @constructor
+     * @param {EmbedGenOptions} options - Options for generating the embed
+     */
     export const EmbedGen = ({
         profile,
         member,
@@ -337,22 +457,22 @@ export namespace EmbedTemplate {
         case EmbedVerificationUtils.EmbedAuthorProfile.User:
             builder.setAuthor({
                 name:
-                        member.user.displayName ??
-                        member.user.username ??
-                        "Astral Roleplay User",
+                    member.user.displayName ??
+                    member.user.username ??
+                    "Astral Roleplay User",
                 iconURL:
-                        member.user.displayAvatarURL() ??
-                        member.user.avatarURL() ??
-                        member.user.defaultAvatarURL ??
-                        logoUrl(),
+                    member.user.displayAvatarURL() ??
+                    member.user.avatarURL() ??
+                    member.user.defaultAvatarURL ??
+                    logoUrl(),
             });
             break;
         case EmbedVerificationUtils.EmbedAuthorProfile.UserWithOfficialPFP:
             builder.setAuthor({
                 name:
-                        member.user.displayName ??
-                        member.user.username ??
-                        "Astral Roleplay User",
+                    member.user.displayName ??
+                    member.user.username ??
+                    "Astral Roleplay User",
                 iconURL: logoUrl(),
             });
             break;

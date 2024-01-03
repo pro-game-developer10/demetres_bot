@@ -1,5 +1,5 @@
 import { Command } from "@sapphire/framework";
-import { EmbedTemplate } from "../utils/embedTemplates";
+import { EmbedTemplate } from "../utils/embed/embedTemplates";
 import { ApplicationCommandType } from "discord.js";
 import { SuggestionUtils } from "../utils/suggestionUtils";
 

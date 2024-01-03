@@ -7,3 +7,6 @@ tsconfig.tsbuildinfo
 private
 coverage
 output
+/plugins/**
+!/plugins/example
+!/plugins/example/**

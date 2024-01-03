@@ -10,8 +10,12 @@ import OverridesConfig, {
 import PluginsConfig, {
     pluginsConfigSchema,
 } from "../../schemas/config/plugins";
+import EmojisConfig, {
+    emojiConfigSchema
+} from "../../schemas/config/emojis"
 import { JSONConfigDefaults } from "../../data/jsonConfigDefaults";
 import { ConfigUtils } from "./configUtils";
+// FIXME: Refactor Needed
 export namespace JSONConfig {
     export const ROOT_PATH = path.join(__dirname, "../../../");
     export const OVERRIDES_CONFIG_FILE_PATH = path.join(
@@ -24,6 +28,7 @@ export namespace JSONConfig {
         MENTIONABLES = "mentionables",
         OVERRIDES = "overrides",
         PLUGINS = "plugins",
+        EMOJIS = "emojis"
     }
 
     export type ConfigJSON<C extends ConfigType> =
@@ -35,6 +40,8 @@ export namespace JSONConfig {
             ? OverridesConfig
             : C extends ConfigType.PLUGINS
             ? PluginsConfig
+            : C extends ConfigType.EMOJIS
+            ? EmojisConfig
             : never;
 
     export interface ConfigsAll extends ConfigsAllLimited {
@@ -45,6 +52,7 @@ export namespace JSONConfig {
         mentionables: ConfigJSON<ConfigType.MENTIONABLES>;
         overrides: ConfigJSON<ConfigType.OVERRIDES>;
         plugins: ConfigJSON<ConfigType.PLUGINS>;
+        emojis: ConfigJSON<ConfigType.EMOJIS>;
     }
     export type ConfigPathsAll = {
         [P in keyof ConfigsAll]: string;
@@ -62,6 +70,9 @@ export namespace JSONConfig {
             pluginsPath: JSONConfigDefaults.OVERRIDES.configPaths.filter(
                 (path) => path.type === "plugins"
             )[0].path,
+            emojisPath: JSONConfigDefaults.OVERRIDES.configPaths.filter(
+                (path) => path.type === "emojis"
+            )[0].path
         };
         const botPath =
             contents.configPaths?.filter(
@@ -73,11 +84,15 @@ export namespace JSONConfig {
         const pluginsPath =
             contents.configPaths?.filter((path) => path.type === "plugins")[0]
                 .path ?? fallbacks.pluginsPath;
+        const emojisPath =
+            contents.configPaths?.filter((path) => path.type === "emojis")[0]
+                .path ?? fallbacks.emojisPath
         const paths: ConfigPathsAll = {
             bot: path.join(ROOT_PATH, contents.root, botPath),
             mentionables: path.join(ROOT_PATH, contents.root, mentionablesPath),
             overrides: OVERRIDES_CONFIG_FILE_PATH,
             plugins: path.join(ROOT_PATH, contents.root, pluginsPath),
+            emojis: path.join(ROOT_PATH, contents.root, emojisPath)
         };
         return paths;
     }
@@ -96,6 +111,9 @@ export namespace JSONConfig {
             plugins: JSON.parse(
                 fs.readFileSync(paths.plugins).toString()
             ) as ConfigJSON<ConfigType.PLUGINS>,
+            emojis: JSON.parse(
+                fs.readFileSync(paths.emojis).toString()
+            ) as ConfigJSON<ConfigType.EMOJIS>
         };
         fileConfigs.bot = ConfigUtils.populateConfig(
             ConfigType.BOT_CONFIG,
@@ -113,10 +131,15 @@ export namespace JSONConfig {
             ConfigType.PLUGINS,
             fileConfigs.plugins
         ) as ConfigJSON<ConfigType.PLUGINS>;
+        fileConfigs.emojis = ConfigUtils.populateConfig(
+            ConfigType.EMOJIS,
+            fileConfigs.emojis
+        ) as ConfigJSON<ConfigType.EMOJIS>
         botConfigSchema().parse(fileConfigs.bot);
         mentionablesConfigSchema().parse(fileConfigs.mentionables);
         overridesConfigSchema().parse(fileConfigs.overrides);
         pluginsConfigSchema().parse(fileConfigs.plugins);
+        emojiConfigSchema().parse(fileConfigs.emojis)
         return fileConfigs;
     }
 }

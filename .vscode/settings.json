@@ -8,5 +8,10 @@
         "<C-c>": false,
         "<C-p>": false,
         "<C-x>": false
-    }
+    },
+    "exportall.config.folderListener": [
+        "/src/utils/json",
+        "/src/utils/embed",
+        "/src/utils/dotenv"
+    ]
 }

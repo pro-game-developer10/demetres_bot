@@ -1,7 +1,7 @@
 import { Args, Command } from "@sapphire/framework";
 import { Message } from "discord.js";
-import { EmbedTemplate } from "../utils/embedTemplates";
-import { EmbedVerificationUtils } from "../utils/embedVerification";
+import { EmbedTemplate } from "../utils/embed/embedTemplates";
+import { EmbedVerificationUtils } from "../utils/embed/embedVerification";
 export class EmbedCommand extends Command {
     public constructor(context: Command.Context, options: Command.Options) {
         super(context, {

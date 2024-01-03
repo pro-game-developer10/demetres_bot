@@ -5,7 +5,7 @@ import {
     Message,
     SlashCommandStringOption,
 } from "discord.js";
-import { EmbedTemplate } from "../utils/embedTemplates";
+import { EmbedTemplate } from "../utils/embed/embedTemplates";
 
 export class TemplateCommand extends Command {
     public constructor(context: Command.Context, options: Command.Options) {
@@ -40,17 +40,17 @@ export class TemplateCommand extends Command {
     public async messageRun(message: Message, args: Args) {
         const id = await args.pick("string");
         switch (id.toLowerCase()) {
-        case "ticket":
-            return await message.channel.send({
-                embeds: [EmbedTemplate.TicketSelect],
-                components: [
+            case "ticket":
+                return await message.channel.send({
+                    embeds: [EmbedTemplate.TicketSelect],
+                    components: [
                         EmbedTemplate.TicketSelectMenu as unknown as APIActionRowComponent<APIMessageActionRowComponent>,
-                ],
-            });
-        default:
-            return await message.channel.send({
-                embeds: [EmbedTemplate.InvalidTemplateError(id)],
-            });
+                    ],
+                });
+            default:
+                return await message.channel.send({
+                    embeds: [EmbedTemplate.InvalidTemplateError(id)],
+                });
         }
     }
     public async chatInputRun(
@@ -60,17 +60,17 @@ export class TemplateCommand extends Command {
             interaction.options.getString("template_id", true) ??
             "error_invalid_args";
         switch (id.toLowerCase()) {
-        case "ticket":
-            return await interaction.reply({
-                embeds: [EmbedTemplate.TicketSelect],
-                components: [
+            case "ticket":
+                return await interaction.reply({
+                    embeds: [EmbedTemplate.TicketSelect],
+                    components: [
                         EmbedTemplate.TicketSelectMenu as unknown as APIActionRowComponent<APIMessageActionRowComponent>,
-                ],
-            });
-        default:
-            return await interaction.reply({
-                embeds: [EmbedTemplate.InvalidTemplateError(id)],
-            });
+                    ],
+                });
+            default:
+                return await interaction.reply({
+                    embeds: [EmbedTemplate.InvalidTemplateError(id)],
+                });
         }
     }
 }

@@ -2,6 +2,7 @@ import BotConfig from "../schemas/config/bot-config";
 import MentionablesConfig from "../schemas/config/mentionables";
 import OverridesConfig from "../schemas/config/overrides";
 import PluginsConfig from "../schemas/config/plugins";
+import EmojisConfig from "../schemas/config/emojis"
 
 export namespace JSONConfigDefaults {
     export const BOT: Required<BotConfig> = {
@@ -33,6 +34,11 @@ export namespace JSONConfigDefaults {
                 fileType: "json",
                 path: "./config/plugins.json",
             },
+            {
+                type: "emojis",
+                fileType: "json",
+                path: "./config/plugins.json"
+            }
         ],
     };
     export const PLUGINS: Required<PluginsConfig> = {
@@ -40,4 +46,8 @@ export namespace JSONConfigDefaults {
         experimentalSupport: false,
         plugins: [],
     };
+    export const EMOJIS: Required<EmojisConfig> = {
+        enabled: false,
+        emojis: []
+    }
 }

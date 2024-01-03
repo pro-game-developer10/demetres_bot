@@ -8,7 +8,7 @@ import {
 } from "@sapphire/framework";
 import { AntiLinkResults } from "../preconditions/AntiLinkPrecondition";
 import { MessageAdapter } from "../utils/messageAdapter";
-import { EmbedTemplate } from "../utils/embedTemplates";
+import { EmbedTemplate } from "../utils/embed/embedTemplates";
 // import { EmbedTemplate } from '../utils/embedTemplates'
 
 interface MessageDenyErrorContextProps {

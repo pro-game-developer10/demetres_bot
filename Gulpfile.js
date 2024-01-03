@@ -2,24 +2,31 @@
 const { src, dest, series, watch, parallel } = require("gulp")
 
 const eslint = require("gulp-eslint")
+const merge = require("merge2")
+const sourcemaps = require("gulp-sourcemaps")
 const typescript = require("gulp-typescript")
 // const uglify = require("gulp-uglify")
 
 const tsProj = typescript.createProject("tsconfig.json")
 
 function lint(cb) {
-    return src("src/*.ts")
+    return tsProj.src()
         .pipe(eslint())
         .pipe(eslint.format())
         .pipe(eslint.failAfterError())
 }
 
 function compile(cb) {
-    return src("src/**/**/*.ts")
+    const compilationResult = tsProj.src()
+        .pipe(sourcemaps.init())
         .pipe(tsProj())
-        .js
-        // .pipe(uglify())
+    return merge([
+        compilationResult.js,
+        compilationResult.dts,
+    ].map(result => result
+        .pipe(sourcemaps.write('.', { sourceRoot: './', includeContent: false }))
         .pipe(dest("dist"))
+    ))
 }
 
 function gwatch(cb) {

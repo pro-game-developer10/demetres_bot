@@ -1,11 +1,35 @@
+/**
+ * Utilities for verifying embeds
+ */
 export namespace EmbedVerificationUtils {
+    /**
+     * Every usable author profile for the /embed command
+     */
     export enum EmbedAuthorProfile {
+        /**
+         * Profile which represents the server as the author
+         */
         Official = "Official",
+        /**
+         * Profile which represents the user who made the embed as the author
+         */
         User = "User",
+        /**
+         * Same as `EmbedAuthorProfile.User` but with the pfp of `EmbedProfile.Official`
+         */
         UserWithOfficialPFP = "User With Official PFP",
+        /**
+         * No profile is associated with the embed
+         */
         None = "None",
+        /**
+         * Profile which represents the server's staff team as the author
+         */
         Team = "Official (as team)",
     }
+    /**
+     * Every usable color for the /embed command
+     */
     export enum EmbedColorType {
         Red = 0xff0000,
         Orange = 0xff4500,
@@ -15,8 +39,17 @@ export namespace EmbedVerificationUtils {
         Purple = 0x5a3ba2,
         None = Number(null),
     }
+    /**
+     * Represents a result of the `verifyColorType()` function
+     */
     interface ColorTypeVerificationResult {
+        /**
+         * Whether or not the color exists in `EmbedVerificationUtils.possibleColorTypeValues`
+         */
         isValid: boolean;
+        /**
+         * The `EmbedColorType` associated with the provided color
+         */
         profile: EmbedColorType;
     }
     export const possibleColorTypeValues = [
@@ -28,7 +61,11 @@ export namespace EmbedVerificationUtils {
         "purple",
         "none",
     ];
-    // TOAD: Switched to a map based approach and remove the switch statement entirely
+    /**
+     * Verifies whether or not a color is valid
+     * @param colorName Color name to verify
+     * @returns Whether or not the color is valid and if valid also returns the color associated with the input
+     */
     export function verifyColorType(
         colorName: string
     ): ColorTypeVerificationResult {
@@ -61,10 +98,22 @@ export namespace EmbedVerificationUtils {
         }
         return result;
     }
+    /**
+     * Represents a result of the `verifyAuthorProfile()` function
+     */
     interface AuthorProfileVerificationResult {
+        /**
+         * Whether or not the profile is valid
+         */
         isValid: boolean;
+        /**
+         * The profile itself
+         */
         profile: EmbedAuthorProfile;
     }
+    /**
+     * All the possible author profile values
+     */
     export const possibleAuthorProfileValues = {
         official: [
             EmbedAuthorProfile.Official.toLowerCase(),

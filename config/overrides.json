@@ -9,12 +9,17 @@
         {
             "type": "mentionables",
             "fileType": "json",
-            "path": "./mentionables.json"
+            "path": "./mentionables.dev.json"
         },
         {
             "type": "plugins",
             "fileType": "json",
             "path": "./plugins.json"
+        },
+        {
+            "type": "emojis",
+            "fileType": "json",
+            "path": "./emojis.json"
         }
     ]
 }

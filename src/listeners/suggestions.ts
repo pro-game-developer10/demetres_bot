@@ -1,6 +1,6 @@
 import { Listener } from "@sapphire/framework";
 import { Message } from "discord.js";
-import { EmbedTemplate } from "../utils/embedTemplates";
+import { EmbedTemplate } from "../utils/embed/embedTemplates";
 import { ConfigUtils } from "../utils/json/configUtils";
 
 export class SuggestionListener extends Listener {
@@ -14,7 +14,16 @@ export class SuggestionListener extends Listener {
     }
     public async run(msg: Message) {
         if (msg.member?.user.bot) return;
-        if (!(msg.channelId == ConfigUtils.findOneMentionableByFlags("channel","SUGGESTIONS_CHANNEL").id)) return;
+        if (
+            !(
+                msg.channelId ==
+                ConfigUtils.findOneMentionableByFlags(
+                    "channel",
+                    "SUGGESTIONS_CHANNEL"
+                ).id
+            )
+        )
+            return;
         const suggestionEmbed = EmbedTemplate.UserSuggestion(
             msg.member!,
             msg.content

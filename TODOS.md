@@ -10,15 +10,16 @@
 >
 > ## 2. Add support for plugins
 >
-> 1) File Structure of a plugin
-> 2) Add support for repo fetching
+> 1) ~~File Structure of a plugin~~ **[REVISE]**
+> 2) ~~Add support for repo fetching~~ **[REVISE]**
+> 3) ~~Make use of the `plugins.json` and `plugin.json` files~~ **[SD4L]**
 >
-> ## 3. Convert existing features to plugins
+> ## ~~3. Convert existing features to plugins~~ **[SD4L]**
 >
 > ## 4. Implement Tests
 >
-> 1) Write the tests
-> 2) Add comments to code
+> 1) Add comments to code
+> 2) Write the tests
 >
 > ## 5. Implement CLI Tools
 >
@@ -53,7 +54,7 @@
 >
 > ## VSCode Configs
 >
-> `launch.json`
+> ~~`launch.json`~~
 > `tasks.json`
 >
 > ## Development
@@ -61,14 +62,18 @@
 > Optimize `.editorconfig`
 > Optimize `.gitignore`
 > Implement `README.md`
-> Implement `LICENSE`
-> Implement `ROADMAP.md`
+> ~~Implement `LICENSE`~~
 > Implement `CONTRIBUTING.md`
 > Implement `CHANGELOG.md`
 > Implement `ARCHITECTURE.md`
-> Implement `CONTRIBUTORS.md`
 > Implement `CODE_OF_CONDUCT.md`
 >
 > ## Features
 >
 > Add native notification support using `node-notifier`
+>
+> ## Perfomance
+>
+> Finish implementing benchmark files
+> Fix perfomance bottlenecks
+> Fix code complexity issues

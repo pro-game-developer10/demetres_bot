@@ -8,10 +8,16 @@ import {
     type StringSelectMenuInteraction,
 } from "discord.js";
 import { ConfigUtils } from "../utils/json/configUtils";
-import { EmbedTemplate, TicketPermissionsInfo } from "../utils/embedTemplates";
+import {
+    EmbedTemplate,
+    TicketPermissionsInfo,
+} from "../utils/embed/embedTemplates";
 
 export class TicketSelectionHandler extends InteractionHandler {
-    public constructor(ctx: InteractionHandler.LoaderContext, options: InteractionHandler.Options) {
+    public constructor(
+        ctx: InteractionHandler.LoaderContext,
+        options: InteractionHandler.Options
+    ) {
         super(ctx, {
             ...options,
             interactionHandlerType: InteractionHandlerTypes.SelectMenu,
@@ -31,56 +37,79 @@ export class TicketSelectionHandler extends InteractionHandler {
             permissions: OverwriteResolvable[];
         } = { name: "", mentions: [], permissions: [] };
         switch (interaction.values[0]) {
-        case "support":
-            ticketInfo.name = `🎟️〢${interaction.user.username}-support`;
-            ticketInfo.mentions.push(
-                `<@${interaction.user.id}>`,
-                `<@&${ConfigUtils.findOneMentionableByFlags("role","STAFF_ROLE").id}>`
-            );
-            ticketInfo.permissions =
+            case "support":
+                ticketInfo.name = `🎟️〢${interaction.user.username}-support`;
+                ticketInfo.mentions.push(
+                    `<@${interaction.user.id}>`,
+                    `<@&${
+                        ConfigUtils.findOneMentionableByFlags(
+                            "role",
+                            "STAFF_ROLE"
+                        ).id
+                    }>`
+                );
+                ticketInfo.permissions =
                     TicketPermissionsInfo.SupportTicketPermissions(
                         interaction.user.id,
                         interaction.guild!
                     );
-            break;
-        case "job":
-            ticketInfo.name = `💼〢${interaction.user.username}-job`;
-            ticketInfo.mentions.push(
-                `<@${interaction.user.id}>`,
-                `<@&${ConfigUtils.findOneMentionableByFlags("role","JOB_MANAGER_ROLE").id}>`
-            );
-            ticketInfo.permissions =
+                break;
+            case "job":
+                ticketInfo.name = `💼〢${interaction.user.username}-job`;
+                ticketInfo.mentions.push(
+                    `<@${interaction.user.id}>`,
+                    `<@&${
+                        ConfigUtils.findOneMentionableByFlags(
+                            "role",
+                            "JOB_MANAGER_ROLE"
+                        ).id
+                    }>`
+                );
+                ticketInfo.permissions =
                     TicketPermissionsInfo.JobTicketPermissions(
                         interaction.user.id,
                         interaction.guild!
                     );
-            break;
-        case "donate":
-            ticketInfo.mentions.push(
-                `<@${interaction.user.id}>`,
-                `<@&${ConfigUtils.findOneMentionableByFlags("role","DONATE_MANAGER_ROLE").id}>`
-            );
-            ticketInfo.name = `💸〢${interaction.user.username}-donate`;
-            ticketInfo.permissions =
+                break;
+            case "donate":
+                ticketInfo.mentions.push(
+                    `<@${interaction.user.id}>`,
+                    `<@&${
+                        ConfigUtils.findOneMentionableByFlags(
+                            "role",
+                            "DONATE_MANAGER_ROLE"
+                        ).id
+                    }>`
+                );
+                ticketInfo.name = `💸〢${interaction.user.username}-donate`;
+                ticketInfo.permissions =
                     TicketPermissionsInfo.DonateTicketPermissions(
                         interaction.user.id,
                         interaction.guild!
                     );
-            break;
-        default:
-            ticketInfo.mentions.push(
-                `<@${interaction.user.id}>`,
-                `<@&${ConfigUtils.findOneMentionableByFlags("role","STAFF_ROLE").id}>`
-            );
-            ticketInfo.name = `🎫〢${interaction.user.username}-ticket`;
-            ticketInfo.permissions =
+                break;
+            default:
+                ticketInfo.mentions.push(
+                    `<@${interaction.user.id}>`,
+                    `<@&${
+                        ConfigUtils.findOneMentionableByFlags(
+                            "role",
+                            "STAFF_ROLE"
+                        ).id
+                    }>`
+                );
+                ticketInfo.name = `🎫〢${interaction.user.username}-ticket`;
+                ticketInfo.permissions =
                     TicketPermissionsInfo.SupportTicketPermissions(
                         interaction.user.id,
                         interaction.guild!
                     );
-            break;
+                break;
         }
-        const categoryID = ConfigUtils.findOneMentionableByFlags("channel","SUPPORT_CATEGORY").id;
+        const categoryID = ConfigUtils.findOneMentionableByFlags(
+            "channel",
+            "SUPPORT_CATEGORY"
+        ).id;
         const ticketChannel = await interaction.guild?.channels.create({
             type: ChannelType.GuildText,
             name: ticketInfo.name,

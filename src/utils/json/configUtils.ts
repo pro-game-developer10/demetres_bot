@@ -40,13 +40,13 @@ export namespace ConfigUtils {
     type GlobalMentionableFlags = never
     type MentionableFlagAll = ChannelMentionableFlag | RoleMentionableFlag
     export type MentionableFlag<T extends MentionableType = "all"> =
-        | T extends "channel"
+        ( T extends "channel"
         ? ChannelMentionableFlag
         : T extends "role"
         ? RoleMentionableFlag
         : T extends "all"
         ? MentionableFlagAll
-        : string
+        : string )
         | GlobalMentionableFlags
     export function includesFlag(flagList: string[] | Record<string, boolean>, desiredFlag: string): boolean {
         if (Array.isArray(flagList)) return flagList.includes(desiredFlag)
@@ -67,6 +67,17 @@ export namespace ConfigUtils {
     }
     export function findOneMentionableByFlags(mentionableType: MentionableType, ...flags: MentionableFlag<typeof mentionableType>[]): NonNullable<MentionablesConfig["items"]>[number] {
         return filterMentionablesByFlags(mentionableType, ...flags)![0]
+    }
+    export function getEmojiByType(type: string, returnAsMention: boolean = false): string | null {
+        const configs = JSONConfig.parseConfigs()
+        const { emojis, enabled } = configs.emojis
+        if (!enabled) return null
+        const selectedEmoji = emojis?.filter(emoji => emoji.type === type)[0]
+        if (!selectedEmoji) return null
+        if (returnAsMention && !selectedEmoji.id) return null
+        else return returnAsMention 
+            ? `<${selectedEmoji.animated ? "a" : ""}:${selectedEmoji.name}:${selectedEmoji.id}>`
+            : selectedEmoji.unicodeLiteral ?? selectedEmoji.id ?? selectedEmoji.name ?? null
     }
     export function parseConfigFileInfo(configObj: ConfigFile): ConfigFile {
         let { fileType } = configObj;
@@ -98,6 +109,9 @@ export namespace ConfigUtils {
         case JSONConfig.ConfigType.PLUGINS:
             configDefaults = JSONConfigDefaults.PLUGINS;
             break;
+        case JSONConfig.ConfigType.EMOJIS:
+            configDefaults = JSONConfigDefaults.EMOJIS
+            break
         default:
             throw new Error("Invalid Config Type") as never;
         }
