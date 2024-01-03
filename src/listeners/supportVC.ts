@@ -16,14 +16,7 @@ export class SupportVCListener extends Listener {
         });
     }
     public async run(_oldState: VoiceState, newState: VoiceState) {
-        if (
-            !(
-                newState.channelId! ==
-                ConfigUtils.findOneMentionableByFlags("channel", "WFS_CHANNEL")
-                    .id
-            )
-        )
-            return;
+        if (!(newState.channelId! == ConfigUtils.findOneMentionableByFlags("channel", "WFS_CHANNEL").id)) return;
         const supportChannelCount = newState.guild.channels.cache.filter(
             (channel) =>
                 channel.isVoiceBased() &&
